@@ -12,7 +12,6 @@ import salirIcon from "./icons/salir.svg"
 import { Session } from "@supabase/supabase-js";
 import DialogConfirm from "./dialogComponents/DialogConfirm";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import MindHubConfig from "./MindHubConfig";
 
 type MHTabProps = {
   nombreTab: string;

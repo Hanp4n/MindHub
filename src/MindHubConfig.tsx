@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import monigote from './icons/monigote.svg';
@@ -7,18 +7,7 @@ import notificaciones from './icons/notificacion.svg';
 import nube from './icons/nube.svg';
 import hdd from './icons/hdd.svg';
 import descargas from './icons/descargar.svg'
-import iconoCuenta from './icons/icono-cuenta.svg'
-import Notificaciones from './icons/notificacion.svg';
 import cerrar from './icons/Cerrar.svg'
-import { Session } from '@supabase/supabase-js';
-import { supabase } from './supabaseClient';
-import { session } from 'electron';
-import BorderedButton from './BorderedButton';
-import Cuenta from './MindHubConfigTabs/Cuenta';
-import Accesibilidad from './MindHubConfigTabs/Accesibilidad';
-import NotificacionesTab from './MindHubConfigTabs/Notificaciones';
-import Almacenamiento from './MindHubConfigTabs/Almacenamiento';
-import Descargas from './MindHubConfigTabs/Descargas';
 
 
 type Props = {}
@@ -34,10 +23,7 @@ const MindHubConfigTab = ({ nombreTab, imgTab, path }: MHConfigTabProps) => {
   const location = useLocation();
   const isActive = location.pathname.endsWith(path);
                    
-
-
   const handleClick = (e: React.MouseEvent) => {
-    // Usar ruta relativa para rutas anidadas (sin opciones adicionales)
     e.preventDefault();
     navigate("/config/"+path);
   };

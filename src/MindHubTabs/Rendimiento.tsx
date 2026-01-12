@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "../components/ui/select"
 import { Button } from "../components/ui/button";
-
+import { supabase } from "../supabaseClient";
 
 type RendimientoCardProps = {
   titulo: string,
@@ -49,7 +49,7 @@ type chartRegistry = {
   tiempo: number
 }
 
-const chartDataDemo:chartRegistry[] = [
+const chartDataDemo: chartRegistry[] = [
   { dia: "1", tiempo: 1.4 },
   { dia: "3", tiempo: 5 },
   { dia: "4", tiempo: 1 },
@@ -59,12 +59,51 @@ const chartDataDemo:chartRegistry[] = [
 ]
 
 const Rendimiento = () => {
+  const [app, setApp] = useState("korolang");
+  const [month, setMonth] = useState("1");
+  const [year, setYear] = useState("2026");
+
+  const tiempoDeUsoApp = async () => {
+    // const { data: { session } } = await supabase.auth.getSession();
+    // console.log("User ID:", session?.user.id);
+
+    const nextMonth = (Number(month) + 1).toString().padStart(2, '0');
+
+    const startDate = `${year}-${month.padStart(2, '0')}-01`;
+    const endDate = `${year}-${nextMonth}-01`;
+
+    // console.log("Start Date:", startDate);
+    // console.log("End Date:", endDate);
+
+    const { data, error } = await supabase
+      .schema('mindhub')
+      .from('tiempo')
+      .select('cantidad')
+      .eq('id_app', 1)
+      .gte('fecha', startDate)
+      .lte('fecha', endDate);
+
+    if (error) {
+      console.error('Error:', error);
+    } else {
+      console.log('Datos:', data);
+      return data;
+    }
+  }
+
+  const generarInforme = async () => {
+    const tiempoUso = await tiempoDeUsoApp();
+    //tareas enviadas este mes
+    const tareasRealizadas = 15; // Placeholder
+    const TareasVencidas = 3; // Placeholder
+  };
+
   return (
     <div className="flex flex-col gap-10 p-6 w-full
     overflow-y">
       <h1 className="text-2xl font-bold">Rendimiento</h1>
       <div className="flex flex-wrap h-fit justify-between max-w-[800px]">
-        <Select>
+        <Select value={app} onValueChange={setApp}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="App" />
           </SelectTrigger>
@@ -73,26 +112,26 @@ const Rendimiento = () => {
             <SelectItem value="korocode">KoroCode</SelectItem>
           </SelectContent>
         </Select>
-        <Select>
+        <Select value={month} onValueChange={setMonth}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Mes" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="enero">Enero</SelectItem>
-            <SelectItem value="febrero">Febrero</SelectItem>
-            <SelectItem value="marzo">Marzo</SelectItem>
-            <SelectItem value="abril">Abril</SelectItem>
-            <SelectItem value="mayo">Mayo</SelectItem>
-            <SelectItem value="junio">Junio</SelectItem>
-            <SelectItem value="julio">Julio</SelectItem>
-            <SelectItem value="agosto">Agosto</SelectItem>
-            <SelectItem value="septiembre">Septiembre</SelectItem>
-            <SelectItem value="octubre">Octubre</SelectItem>
-            <SelectItem value="noviembre">Noviembre</SelectItem>
-            <SelectItem value="diciembre">Diciembre</SelectItem>
+            <SelectItem value="1">Enero</SelectItem>
+            <SelectItem value="2">Febrero</SelectItem>
+            <SelectItem value="3">Marzo</SelectItem>
+            <SelectItem value="4">Abril</SelectItem>
+            <SelectItem value="5">Mayo</SelectItem>
+            <SelectItem value="6">Junio</SelectItem>
+            <SelectItem value="7">Julio</SelectItem>
+            <SelectItem value="8">Agosto</SelectItem>
+            <SelectItem value="9">Septiembre</SelectItem>
+            <SelectItem value="10">Octubre</SelectItem>
+            <SelectItem value="11">Noviembre</SelectItem>
+            <SelectItem value="12">Diciembre</SelectItem>
           </SelectContent>
         </Select>
-        <Select>
+        <Select value={year} onValueChange={setYear}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Año" />
           </SelectTrigger>
@@ -100,10 +139,11 @@ const Rendimiento = () => {
             <SelectItem value="2023">2023</SelectItem>
             <SelectItem value="2024">2024</SelectItem>
             <SelectItem value="2025">2025</SelectItem>
+            <SelectItem value="2026">2026</SelectItem>
           </SelectContent>
         </Select>
 
-        <Button className="shadow-lg bg-[var(--mh-mid-light-turquoise)] flex items-center justify-center gap-3 px-3 rounded-sm"><div className="w-4"><img src={generarInformeIcon} /></div><p>Generar</p></Button>
+        <Button onClick={generarInforme} className="shadow-lg bg-[var(--mh-mid-light-turquoise)] flex items-center justify-center gap-3 px-3 rounded-sm"><div className="w-4"><img src={generarInformeIcon} /></div><p>Generar</p></Button>
       </div>
       <div className="bg-[var(--mh-light-gray)] h-[1px]"></div>
       <p className="text-xl font-bold">KoroLang, Noviembre de 2025</p>
@@ -113,7 +153,7 @@ const Rendimiento = () => {
         <RendimientoCard valor={7} titulo="Tareas vencidas" porcentaje={5} ascendente={false} observaciones="5% menos que el mes pasado" />
       </div>
       <div>
-        <ChartAreaDefault fillColor="var(--mh-mid-light-turquoise)" strokeColor="var(--mh-mid-dark-turquoise)" title="Tiempo de uso" chartData={chartDataDemo} chartKeyName="dia" chartValueName="tiempo"/>
+        <ChartAreaDefault fillColor="var(--mh-mid-light-turquoise)" strokeColor="var(--mh-mid-dark-turquoise)" title="Tiempo de uso" chartData={chartDataDemo} chartKeyName="dia" chartValueName="tiempo" />
       </div>
     </div>
   );
