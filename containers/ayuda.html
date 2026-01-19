@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayuda - MindHub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+
+    .help-container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: #2c3e50;
+      color: white;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      background: #34495e;
+      border-bottom: 1px solid #3d566e;
+    }
+
+    .sidebar-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .sidebar-nav {
+      padding: 10px 0;
+    }
+
+    .nav-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-left: 3px solid transparent;
+      font-size: 14px;
+    }
+
+    .nav-item:hover {
+      background: #34495e;
+    }
+
+    .nav-item.active {
+      background: #34495e;
+      border-left-color: #3498db;
+      font-weight: 500;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      background: white;
+    }
+
+    .content-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .content-wrapper h1 {
+      font-size: 32px;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .content-wrapper h2 {
+      font-size: 24px;
+      color: #34495e;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    .content-wrapper p {
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .content-wrapper img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin: 20px 0;
+    }
+
+    .content-wrapper ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .content-wrapper li {
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .info-box {
+      background: #e8f4f8;
+      border-left: 4px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: #2c3e50;
+    }
+
+    /* Scrollbar */
+    .sidebar::-webkit-scrollbar,
+    .content-area::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: #2c3e50;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #34495e;
+      border-radius: 4px;
+    }
+
+    .content-area::-webkit-scrollbar-track {
+      background: #f5f5f5;
+    }
+
+    .content-area::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="help-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>📚 Ayuda de MindHub</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-page="inicio">Inicio</div>
+        <div class="nav-item" data-page="inicio-sesion">Inicio de sesión</div>
+        <div class="nav-item" data-page="registro">Registro</div>
+        <div class="nav-item" data-page="libreria">Librería</div>
+        <div class="nav-item" data-page="actualizaciones">Actualizaciones</div>
+        <div class="nav-item" data-page="notificaciones">Notificaciones</div>
+      </nav>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content-area">
+      <div class="content-wrapper" id="content">
+        <h1>Bienvenido a la Ayuda de MindHub</h1>
+        <p>Selecciona un tema del menú lateral para obtener información detallada sobre cómo usar MindHub.</p>
+        
+        <h2>Temas disponibles</h2>
+        <ul>
+          <li><strong>Inicio de sesión:</strong> Aprende cómo acceder a tu cuenta de MindHub</li>
+          <li><strong>Registro:</strong> Crea una nueva cuenta en la plataforma</li>
+          <li><strong>Librería:</strong> Gestiona tus aplicaciones instaladas y disponibles</li>
+          <li><strong>Actualizaciones:</strong> Mantén tus aplicaciones al día</li>
+          <li><strong>Notificaciones:</strong> Comprende el sistema de notificaciones</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const pages = {
+      'inicio': `
+        <h1>Bienvenido a la Ayuda de MindHub</h1>
+        <p>Selecciona un tema del menú lateral para obtener información detallada sobre cómo usar MindHub.</p>
+        
+        <h2>Temas disponibles</h2>
+        <ul>
+          <li><strong>Inicio de sesión:</strong> Aprende cómo acceder a tu cuenta de MindHub</li>
+          <li><strong>Registro:</strong> Crea una nueva cuenta en la plataforma</li>
+          <li><strong>Librería:</strong> Gestiona tus aplicaciones instaladas y disponibles</li>
+          <li><strong>Actualizaciones:</strong> Mantén tus aplicaciones al día</li>
+          <li><strong>Notificaciones:</strong> Comprende el sistema de notificaciones</li>
+        </ul>
+      `,
+      'inicio-sesion': `
+        <h1>Inicio de sesión</h1>
+        <p>Al abrir el launcher, lo primero que nos pedirá el aplicativo es identificarnos. Para ello, simplemente rellenamos el formulario principal con nuestras credenciales.</p>
+        <img src='../src/imgAyuda/inicio_sesion.png'/>
+        <div class="info-box">
+          <p><strong>💡 Consejo:</strong> Si no tienes una cuenta todavía, puedes crear una desde el formulario de inicio de sesión pinchando en "Registrarse".</p>
+        </div>
+        
+        <h2>Pasos para iniciar sesión</h2>
+        <ul>
+          <li>Introduce tu correo electrónico</li>
+          <li>Introduce tu contraseña</li>
+          <li>Pulsa el botón de inicio de sesión</li>
+        </ul>
+      `,
+      'registro': `
+        <h1>Registro</h1>
+        <p>Para crear una nueva cuenta de MindHub, debemos dirigirnos al formulario de inicio de sesión y pinchar en "Registrarse".</p>
+        <img src='../src/imgAyuda/acceder_registrarse.png'/>
+        <h2>Proceso de registro</h2>
+        <p>Una vez accedido al formulario de registro, debemos establecer nuestro nombre de usuario y contraseña.</p>
+        <img src='../src/imgAyuda/registrarse.png'/>
+        <h2>Requisitos del correo electrónico</h2>
+        <p>Para que el correo sea válido, se debe seguir la estructura estándar de un correo:</p>
+        <div class="info-box">
+          <p><strong>Formato:</strong> &lt;nombre_correo&gt;@&lt;proveedor&gt;.&lt;dominio&gt;</p>
+          <p><strong>Ejemplo:</strong> usuario@ejemplo.com</p>
+        </div>
+        
+        <h2>Requisitos de la contraseña</h2>
+        <p>Para que la contraseña sea válida, debe contener <strong>6 o más caracteres</strong>.</p>
+        
+        <div class="info-box">
+          <p><strong>⚠️ Importante:</strong> Asegúrate de recordar tu contraseña o guárdala en un lugar seguro.</p>
+        </div>
+      `,
+      'libreria': `
+        <h1>Librería</h1>
+        <p>Aquí tenemos a nuestra disposición todas las aplicaciones que tenemos instaladas y disponibles para descargar.</p>
+        
+        <h2>Filtrar aplicaciones</h2>
+        <p>Para filtrar entre las aplicaciones instaladas y disponibles, pinchamos en los botones:</p>
+        <ul>
+          <li><strong>Instalados:</strong> Muestra solo las aplicaciones que ya tienes instaladas</li>
+          <li><strong>Disponibles:</strong> Muestra las aplicaciones disponibles para instalar</li>
+        </ul>
+        <img src='../src/imgAyuda/filtros_libreria.png'/>
+        
+        <h2>Gestión de aplicaciones</h2>
+        <p>En cuanto a las aplicaciones, podemos acceder a opciones adicionales pinchando en el menú de tres puntos de cada aplicación:</p>
+        <ul>
+          <li><strong>Changelog:</strong> Ver el historial de cambios de la aplicación</li>
+          <li><strong>Eliminar:</strong> Desinstalar la aplicación del sistema</li>
+        </ul>
+        <img src='../src/imgAyuda/menu3ptos_libreria.png'/>
+      `,
+      'actualizaciones': `
+        <h1>Actualizaciones</h1>
+        <p>Mantener tus aplicaciones actualizadas es importante para disfrutar de las últimas funcionalidades y mejoras de seguridad.</p>
+        
+        <h2>Actualización individual</h2>
+        <p>Para actualizar de manera individual una aplicación, simplemente pulsamos en su botón correspondiente de actualización.</p>
+        <img src='../src/imgAyuda/actualizar_actualizaciones.png'/>
+        <h2>Actualizar todas</h2>
+        <p>Si queremos instalar todas las actualizaciones disponibles de una vez, pinchamos en el botón <strong>"Actualizar todo"</strong>.</p>
+        <img src='../src/imgAyuda/actualizartodo_actualizaciones.png'/>
+        <div class="info-box">
+          <p><strong>⚡ Recomendación:</strong> Es recomendable mantener todas tus aplicaciones actualizadas para un mejor rendimiento y seguridad.</p>
+        </div>
+      `,
+      'notificaciones': `
+        <h1>Notificaciones</h1>
+        <p>Cada notificación posee información que nos permite conocer el estado de nuestras tareas.</p>
+        
+        <h2>Tipos de notificaciones</h2>
+        <p>Existen 4 tipos de notificaciones:</p>
+        <ul>
+          <li><strong>Creada:</strong> Indica que se ha creado una nueva tarea</li>
+          <img src='../src/imgAyuda/creada_notificaciones.png'/>
+          <li><strong>Advertencia:</strong> Alerta sobre algo que requiere atención</li>
+          <img src='../src/imgAyuda/advertencia_notificaciones.png'/>
+          <li><strong>Vencimiento:</strong> Notifica que una tarea ha vencido o está próxima a vencer</li>
+          <img src='../src/imgAyuda/vencida_notificaciones.png'/>
+          <li><strong>Realizada:</strong> Confirma que una tarea ha sido completada</li>
+          <img src='../src/imgAyuda/realizada_notificaciones.png'/>
+        </ul>
+        
+        <h2>Información de la notificación</h2>
+        <p>Una notificación muestra información resumida sobre el evento. Para tener información más detallada, pinchamos en <strong>"más información"</strong>.</p>
+        <img src='../src/imgAyuda/masinfo_notificaciones.png'/>
+        <h2>Acceder a la aplicación</h2>
+        <p>Si una vez leída la notificación queremos acceder directamente a la aplicación relacionada, pinchamos en el botón <strong>"Abrir"</strong>.</p>
+        <img src='../src/imgAyuda/abrir_notificaciones.png'/>
+        <div class="info-box">
+          <p><strong>📬 Mantente informado:</strong> Las notificaciones te ayudan a estar al tanto de todas tus tareas asignadas.</p>
+        </div>
+      `
+    };
+
+    // Navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    const content = document.getElementById('content');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove active class from all items
+        navItems.forEach(nav => nav.classList.remove('active'));
+        
+        // Add active class to clicked item
+        item.classList.add('active');
+        
+        // Load content
+        const page = item.getAttribute('data-page');
+        content.innerHTML = pages[page];
+        
+        // Scroll to top
+        document.querySelector('.content-area').scrollTop = 0;
+      });
+    });
+  </script>
+</body>
+</html>

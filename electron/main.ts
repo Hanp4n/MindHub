@@ -29,6 +29,7 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win: BrowserWindow | null
 let win2: BrowserWindow | null
 let win3: BrowserWindow | null
+let win4: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
@@ -41,6 +42,13 @@ function createWindow() {
   // if (VITE_DEV_SERVER_URL) {
   //   win.webContents.openDevTools()
   // }
+
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.key === 'F1') {
+      event.preventDefault();
+      abrirAyuda();
+    }
+  });
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -192,6 +200,48 @@ ipcMain.on('cerrar-korolang', () => {
   if (win3 && !win3.isDestroyed()) {
     win3.close()
     win3 = null
+  }
+})
+
+function abrirAyuda() {
+  if (win4) {
+    // Si ya existe, solo la enfocamos
+    win4.focus();
+    return;
+  }
+
+  win4 = new BrowserWindow({
+    width: 1000,
+    height: 700,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.mjs'),
+    },
+  })
+
+  if (VITE_DEV_SERVER_URL) {
+    win4.webContents.openDevTools()
+  }
+
+  if (process.env.VITE_DEV_SERVER_URL) {
+    win4.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayuda.html`);
+  } else {
+    win4.loadFile(path.join(RENDERER_DIST, 'containers/ayuda.html'));
+  }
+
+  win4.on('closed', () => {
+    win4 = null
+  })
+}
+
+
+// Ayuda
+
+ipcMain.on('abrir-ayuda', abrirAyuda)
+
+ipcMain.on('cerrar-ayuda', () => {
+  if (win4 && !win4.isDestroyed()) {
+    win4.close()
+    win4 = null
   }
 })
 
