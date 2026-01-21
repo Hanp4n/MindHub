@@ -43,12 +43,7 @@ function createWindow() {
   //   win.webContents.openDevTools()
   // }
 
-  win.webContents.on('before-input-event', (event, input) => {
-    if (input.key === 'F1') {
-      event.preventDefault();
-      abrirAyuda();
-    }
-  });
+  
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -129,6 +124,13 @@ ipcMain.on('abrir-mindHub', () => {
       preload: path.join(__dirname, 'preload.mjs'),
     },
   })
+
+  win2.webContents.on('before-input-event', (event, input) => {
+    if (input.key === 'F1') {
+      event.preventDefault();
+      abrirAyuda();
+    }
+  });
 
   if (VITE_DEV_SERVER_URL) {
     win2.webContents.openDevTools()

@@ -8,6 +8,7 @@ import estadistica from "./icons/estadistica.svg";
 import notificacion from "./icons/notificacion.svg";
 import iconoCuenta from "./icons/icono-cuenta.svg";
 import salirIcon from "./icons/salir.svg"
+import ayudaIcon from "./icons/ayudaIcon.svg"
 
 import { Session } from "@supabase/supabase-js";
 import DialogConfirm from "./dialogComponents/DialogConfirm";
@@ -86,6 +87,12 @@ const MindHubPageMenu = ({changeQuitting}: MindHubPageMenuProps) => {
             <img src={salirIcon} />
           </div>
           <p>Salir</p>
+        </div>
+        <div onClick={() => {}} className="flex gap-3">
+          <div className="w-6">
+            <img src={ayudaIcon} />
+          </div>
+          <p>Ayuda</p>
         </div>
         <div onClick={() => {
           navigate("/config")
