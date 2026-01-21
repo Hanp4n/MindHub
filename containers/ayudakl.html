@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guía de Ayuda - KoroLang</title>
+
+    <!-- ESTILOS (sin modificar) -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        background: #f8f9fa;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: white;
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 24px;
+        margin-bottom: 32px;
+      }
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: #a27890;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .logo-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .nav-section {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .nav-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
+        padding: 0 24px;
+        margin-bottom: 12px;
+      }
+
+      .nav-item {
+        padding: 10px 24px;
+        color: #4b5563;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 15px;
+        border-left: 3px solid transparent;
+      }
+
+      .nav-item:hover {
+        background: #f5eef2;
+        color: #a27890;
+      }
+
+      .nav-item.active {
+        background: #f5eef2;
+        color: #a27890;
+        border-left-color: #a27890;
+        font-weight: 500;
+      }
+
+      .nav-item-toggle {
+        padding: 10px 24px;
+        color: #4b5563;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 15px;
+        border-left: 3px solid transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-item-toggle:hover {
+        background: #f5eef2;
+        color: #a27890;
+      }
+
+      .nav-item-toggle.active {
+        background: #f5eef2;
+        color: #a27890;
+        border-left-color: #a27890;
+        font-weight: 500;
+      }
+
+      .nav-toggle-icon {
+        transition: transform 0.3s;
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .nav-item-toggle.open .nav-toggle-icon {
+        transform: rotate(180deg);
+      }
+
+      .nav-subitems {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-item-toggle.open + .nav-subitems {
+        max-height: 500px;
+      }
+
+      .nav-subitem {
+        padding: 8px 24px 8px 48px;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+      }
+
+      .nav-subitem:hover {
+        background: #f5eef2;
+        color: #a27890;
+      }
+
+      .nav-subitem.active {
+        color: #a27890;
+        font-weight: 500;
+      }
+
+      .logout-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 15px;
+        margin-top: auto;
+        border-top: 1px solid #f5eef2;
+        padding-top: 20px;
+      }
+
+      .logout-btn:hover {
+        color: #ef4444;
+      }
+
+      .main-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 48px 64px;
+      }
+
+      .content-section {
+        display: none;
+        animation: fadeIn 0.3s ease-in;
+      }
+
+      .content-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        font-size: 32px;
+        color: #1f2937;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+
+      p {
+        color: #4b5563;
+        line-height: 1.7;
+        margin-bottom: 16px;
+        font-size: 15px;
+      }
+
+      ul {
+        margin-left: 24px;
+        margin-bottom: 16px;
+        color: #4b5563;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .not-implemented {
+        opacity: 0.4;
+      }
+      .image-placeholder {
+        width: 100%;
+        max-width: 700px;
+        height: auto;
+        margin: 24px 0;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <aside class="sidebar">
+      <div class="logo">
+            <img class="logo-icon" src='../src/icons/koroLangLogo.svg' />
+            <span class="logo-text">Guía</span>
+        </div>
+
+      <nav class="nav-section">
+        <div class="nav-title">KOROLANG</div>
+
+        <div class="nav-item active" data-section="bienvenida">Bienvenida</div>
+        <div class="nav-item" data-section="inicio">Inicio</div>
+        <div class="nav-item" data-section="salir-app">Salir de la app</div>
+        <div class="nav-item" data-section="leer">Leer</div>
+        <div class="nav-item" data-section="escribir">Escribir</div>
+        <div class="nav-item" data-section="hablar">Hablar</div>
+        <div class="nav-item" data-section="tareas">Tareas</div>
+        <div class="nav-item" data-section="chat">Chat</div>
+
+        <div class="nav-item-toggle" data-section="configuracion">
+          <span>Configuración</span>
+          <span class="nav-toggle-icon">▼</span>
+        </div>
+        <div class="nav-subitems">
+          <div class="nav-subitem" data-section="profesor">Profesor</div>
+          <div class="nav-subitem" data-section="idioma">Idioma</div>
+          <div class="nav-subitem" data-section="accesibilidad">
+            Accesibilidad
+          </div>
+        </div>
+      </nav>
+
+      <div id="salir" class="logout-btn">
+        <span>Salir</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="content-section active" id="bienvenida">
+        <h1>Bienvenida</h1>
+        <p>
+          Para empezar a utilizar KoroLang, tendremos que elegir el idioma que
+          queremos aprender pinchando en este menú dropdown:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/idioma_bienvenida.png"
+          class="image-placeholder"
+        />
+      </section>
+
+      <section class="content-section" id="inicio">
+        <h1>Inicio</h1>
+        <p>
+          A través de la línea de tiempo, podremos ver un resumen de las
+          próximas tareas que tenemos que realizar. Si queremos empezar a
+          realizarla, podemos pinchar en ‘Abrir’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/abrir_inicio.png"
+          class="image-placeholder"
+        />
+        <p>
+          Además, podemos ver la cantidad de horas que le hemos dedicado este
+          mes a la aplicación:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/tiempo_inicio.png"
+          class="image-placeholder"
+        />
+        <p>
+          Si queremos salir de la aplicación, simplemente pulsaremos en su botón
+          correspondiente:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/salir_korolang.png"
+          class="image-placeholder"
+        />
+      </section>
+      <section class="content-section" id="salir-app">
+        <h1>Salir de la app</h1>
+            <p>Si queremos salir de nuestra aplicación, pulsaremos en el botón correspondiente:</p>
+            <img src="../src/imgAyuda/korolang/salir_korolang.png" class="image-placeholder" alt="Botón de salir">
+      </section>
+
+      <section class="content-section" id="leer">
+        <h1>Leer</h1>
+        <p class="not-implemented">
+          Si queremos añadir un nuevo documento, pinchamos en ‘Generar’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/generar_leer.png"
+          class="image-placeholder not-implemented"
+        />
+
+        <p class="not-implemented">
+          El profesor estará atento a las frases y palabras que subrayes en el
+          documento.
+        </p>
+
+        <p class="not-implemented">
+          Una vez subrayada la palabra, te saldrá una cuadro de diálogo que te
+          permitirá añadir la frase a el glosario del documento.
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/subrayar_leer.png"
+          class="image-placeholder not-implemented"
+        />
+        <p>
+          Para acceder al glosario, tendrás que presionar en el botón ‘Apuntes’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/glosario_leer.png"
+          class="image-placeholder"
+        />
+        <p>
+          Si queremos eliminar un documento, pinchamos en el menú de tres puntos
+          y seleccionamos eliminar:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/eliminar_leer.png"
+          class="image-placeholder"
+        />
+      </section>
+
+      <section class="content-section" id="escribir">
+        <h1>Escribir</h1>
+        <p>Para crear un nuevo documento, pinchamos en ‘Generar’:</p>
+        <img
+          src="../src/imgAyuda/korolang/generar_escribir.png"
+          class="image-placeholder"
+        />
+
+        <p>
+          Al crear un nuevo documento, podremos escribir en él y asignarle un
+          nombre.
+        </p>
+        <p>
+          Además, podremos guardar los cambios pulsando en el icono de guardado:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/guardar_escribir.png"
+          class="image-placeholder"
+        />
+        <p>
+          Sin embargo, si el icono tiene más transparencia, entonces no hay
+          cambios que se puedan guardar:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/noguarda_escribir.png"
+          class="image-placeholder"
+        />
+        <p class="not-implemented">
+          Una vez escrito en el documento, podemos recibir retroalimentación de
+          nuestro profesor.
+        </p>
+        <p class="not-implemented">
+          Si queremos eliminar el documento, pinchamos en el menú de tres puntos
+          y pulsamos en eliminar.
+        </p>
+      </section>
+
+      <section class="content-section" id="hablar">
+        <h1>Hablar</h1>
+        <p class="not-implemented">
+          Para crear una nueva conversación, pulsamos en el botón generar:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/generar_hablar.png"
+          class="image-placeholder not-implemented"
+        />
+        <p class="not-implemented">
+          Mientras hablamos, podemos apretar en el icono del micrófono para
+          silenciarnos momentáneamente.
+        </p>
+        <p class="not-implemented">
+          Una vez hemos terminado la conversación, podemos recibir tanto la
+          transcripción como la retroalimentación.
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/botones_hablar.png"
+          class="image-placeholder not-implemented"
+        />
+        <p class="not-implemented">
+          Si queremos borrar la conversación, pincharemos en el menú de tres
+          puntos y seleccionamos eliminar.
+        </p>
+      </section>
+
+      <section class="content-section" id="tareas">
+        <h1>Tareas</h1>
+        <p class="not-implemented">
+          Para acceder a las tareas que nos ha impuesto el profesor, simplemente
+          pincharemos en el botón ‘Abrir’.
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/abrir_tareas.png"
+          class="image-placeholder not-implemented"
+        />
+        <p>Existen dos tipos de tareas:</p>
+        <ul>
+          <li>Escribir</li>
+          <img
+            src="../src/imgAyuda/korolang/escribir_tareas.png"
+            class="image-placeholder"
+          />
+          <li>Hablar</li>
+          <img
+            src="../src/imgAyuda/korolang/hablar_tareas.png"
+            class="image-placeholder"
+          />
+        </ul>
+      </section>
+
+      <section class="content-section" id="chat">
+        <h1>Chat</h1>
+        <p>
+          Para hablar con nuestro profesor, simplemente escribimos algo en el
+          campo de texto correspondiente.
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/texto_chat.png"
+          class="image-placeholder"
+        />
+        <p>
+          Una vez hemos escrito nuestro comentario, pulsamos en el botón de
+          envío o pulsamos la tecla ‘enter’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/enviar_chat.png"
+          class="image-placeholder"
+        />
+      </section>
+
+      <section class="content-section" id="configuracion">
+        <h1>Configuración</h1>
+        <p>
+          Si queremos acceder a la configuración de nuestra app, tendremos que
+          dirigirnos al menú de vista lateral y pulsar en ‘Configuración’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/acceder_configuracion.png"
+          class="image-placeholder"
+        />
+        <p>
+          Para configurar nuestra app, tenemos a nuestra disposición las
+          siguientes pestañas:
+        </p>
+        <ul>
+          <li>Profesor</li>
+          <li>Idioma</li>
+          <li>Accesibilidad</li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="profesor">
+        <h1>Profesor</h1>
+        <p class="not-implemented">
+          Podemos incrementar el nivel de exigencia del profesor habilitando la
+          opción ‘Sistema estricto’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/estricto_profesor.png"
+          class="image-placeholder not-implemented"
+        />
+        <p class="not-implemented">
+          Además, podemos proporcionarle instrucciones iniciales que tendrá en
+          cuenta cada vez que hablemos con él:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/instrucciones_profesor.png"
+          class="image-placeholder not-implemented"
+        />
+      </section>
+
+      <section class="content-section" id="idioma">
+        <h1>Idioma</h1>
+        <p class="not-implemented">
+          Si queremos que el idioma que estemos aprendiendo también se vea
+          reflejado en la interfaz de KoroLang, tendremos que activar ‘Adaptar
+          idioma al sistema’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/adaptar_idioma.png"
+          class="image-placeholder not-implemented"
+        />
+        <p class="not-implemented">
+          Además, si queremos cambiar el idioma que estemos estudiando tendremos
+          que seleccionar el nuevo idioma en ‘Idioma a estudiar’:
+        </p>
+        <img
+          src="../src/imgAyuda/korolang/seleccionar_idioma.png"
+          class="image-placeholder not-implemented"
+        />
+      </section>
+
+      <section class="content-section" id="accesibilidad">
+        <h1>Accesibilidad</h1>
+        <p>
+          Desde aquí podremos cambiar el tema de nuestra aplicación a las
+          siguientes configuraciones:
+        </p>
+        <ul>
+          <li>Claro</li>
+          <li>Oscuro</li>
+          <li>Sistema</li>
+        </ul>
+        <p>Por defecto, el tema se mantiene en "Claro".</p>
+        <img
+          src="../src/imgAyuda/mindhub/tema_accesibilidad.png"
+          class="image-placeholder"
+          alt="Configuración de tema"
+        />
+
+        <p class="not-implemented">
+          Posteriormente, podemos ajustar el tamaño del texto en caso de que no
+          se pueda ver con claridad la letra:
+        </p>
+        <img
+          src="../src/imgAyuda/mindhub/tamano_accesibilidad.png"
+          class="image-placeholder not-implemented"
+          alt="Ajuste de tamaño de texto"
+        />
+
+        <p class="not-implemented">
+          Además, podremos reducir el número de animaciones que ocurren en la
+          aplicación pinchando en este switch:
+        </p>
+        <img
+          src="../src/imgAyuda/mindhub/movimientos_accesibilidad.png"
+          class="image-placeholder not-implemented"
+          alt="Reducir animaciones"
+        />
+      </section>
+    </main>
+
+    <!-- LÓGICA (sin modificar) -->
+    <script>
+      const configToggle = document.querySelector(".nav-item-toggle");
+      configToggle.addEventListener("click", (e) => {
+        if (
+          e.target.tagName === "SPAN" &&
+          !e.target.classList.contains("nav-toggle-icon")
+        ) {
+          navigateToSection("configuracion");
+        }
+        configToggle.classList.toggle("open");
+      });
+
+      const navItems = document.querySelectorAll(".nav-item, .nav-subitem");
+      const sections = document.querySelectorAll(".content-section");
+
+      function navigateToSection(sectionId) {
+        navItems.forEach((nav) => nav.classList.remove("active"));
+        configToggle.classList.remove("active");
+
+        sections.forEach((section) => {
+          section.classList.remove("active");
+          if (section.id === sectionId) {
+            section.classList.add("active");
+          }
+        });
+
+        if (sectionId === "configuracion") {
+          configToggle.classList.add("active");
+        } else {
+          const activeItem = document.querySelector(
+            `[data-section="${sectionId}"]`,
+          );
+          if (activeItem) {
+            activeItem.classList.add("active");
+            if (activeItem.classList.contains("nav-subitem")) {
+              configToggle.classList.add("open");
+              configToggle.classList.add("active");
+            }
+          }
+        }
+
+        document.querySelector(".main-content").scrollTop = 0;
+      }
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          navigateToSection(item.dataset.section);
+        });
+      });
+
+      document.getElementById("salir").addEventListener("click", () => {
+        window.close();
+      });
+    </script>
+  </body>
+</html>

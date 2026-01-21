@@ -2,7 +2,6 @@ import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { convertToModelMessages, streamText } from "ai";
-import { openai } from "@ai-sdk/openai";
 import fs from 'fs';
 import pathFile from 'path';
 
@@ -30,6 +29,7 @@ let win: BrowserWindow | null
 let win2: BrowserWindow | null
 let win3: BrowserWindow | null
 let win4: BrowserWindow | null
+let win5: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
@@ -116,6 +116,11 @@ ipcMain.on('cerrar-login', () => {
   }
 })
 
+
+
+
+// MINDHUB
+
 ipcMain.on('abrir-mindHub', () => {
   win2 = new BrowserWindow({
     width: 1000,
@@ -128,7 +133,7 @@ ipcMain.on('abrir-mindHub', () => {
   win2.webContents.on('before-input-event', (event, input) => {
     if (input.key === 'F1') {
       event.preventDefault();
-      abrirAyuda();
+      abrirAyudaMH();
     }
   });
 
@@ -205,7 +210,20 @@ ipcMain.on('cerrar-korolang', () => {
   }
 })
 
-function abrirAyuda() {
+
+
+// Ayuda MindHub
+
+ipcMain.on('abrir-ayudamh', abrirAyudaMH)
+
+ipcMain.on('cerrar-ayudamh', () => {
+  if (win4 && !win4.isDestroyed()) {
+    win4.close()
+    win4 = null
+  }
+})
+
+function abrirAyudaMH() {
   if (win4) {
     // Si ya existe, solo la enfocamos
     win4.focus();
@@ -225,40 +243,57 @@ function abrirAyuda() {
   }
 
   if (process.env.VITE_DEV_SERVER_URL) {
-    win4.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayuda.html`);
+    win4.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudamh.html`);
   } else {
-    win4.loadFile(path.join(RENDERER_DIST, 'containers/ayuda.html'));
+    win4.loadFile(path.join(RENDERER_DIST, 'containers/ayudamh.html'));
   }
 
   win4.on('closed', () => {
     win4 = null
   })
 }
+// Ayuda MindHub
 
+ipcMain.on('abrir-ayudakl', abrirAyudaKL)
 
-// Ayuda
-
-ipcMain.on('abrir-ayuda', abrirAyuda)
-
-ipcMain.on('cerrar-ayuda', () => {
-  if (win4 && !win4.isDestroyed()) {
-    win4.close()
-    win4 = null
+ipcMain.on('cerrar-ayudakl', () => {
+  if (win5 && !win5.isDestroyed()) {
+    win5.close()
+    win5 = null
   }
 })
 
+function abrirAyudaKL() {
+  if (win5) {
+    // Si ya existe, solo la enfocamos
+    win5.focus();
+    return;
+  }
+
+  win5 = new BrowserWindow({
+    width: 1000,
+    height: 700,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.mjs'),
+    },
+  })
+
+  if (VITE_DEV_SERVER_URL) {
+    win5.webContents.openDevTools()
+  }
+
+  if (process.env.VITE_DEV_SERVER_URL) {
+    win5.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudakl.html`);
+  } else {
+    win5.loadFile(path.join(RENDERER_DIST, 'containers/ayudakl.html'));
+  }
+
+  win5.on('closed', () => {
+    win5 = null
+  })
+}
 
 
-//CHAT LÓGICA
-ipcMain.handle("chat", async (_, messages) => {
-  const result = await streamText({
-    model: openai("gpt-o3-mini"),
-    system: "You are a friendly english teacher.",
-    messages: convertToModelMessages(messages),
-  });
-
-  return result.textStream; 
-});
 
 app.whenReady().then(createWindow)
 

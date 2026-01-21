@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Ayuda - MindHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #14b8a6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .nav-section {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 0 24px;
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            padding: 10px 24px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+            color: #14b8a6;
+        }
+
+        .nav-item.active {
+            background: #f0fdfa;
+            color: #14b8a6;
+            border-left-color: #14b8a6;
+            font-weight: 500;
+        }
+
+        .nav-item-toggle {
+            padding: 10px 24px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            border-left: 3px solid transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-item-toggle:hover {
+            background: #f3f4f6;
+            color: #14b8a6;
+        }
+
+        .nav-item-toggle.active {
+            background: #f0fdfa;
+            color: #14b8a6;
+            border-left-color: #14b8a6;
+            font-weight: 500;
+        }
+
+        .nav-toggle-icon {
+            transition: transform 0.3s;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .nav-item-toggle.open .nav-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .nav-subitems {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav-item-toggle.open + .nav-subitems {
+            max-height: 500px;
+        }
+
+        .nav-subitem {
+            padding: 8px 24px 8px 48px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-subitem:hover {
+            background: #f3f4f6;
+            color: #14b8a6;
+        }
+
+        .nav-subitem.active {
+            color: #14b8a6;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            margin-top: auto;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+        }
+
+        .logout-btn:hover {
+            color: #ef4444;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 48px 64px;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #1f2937;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #1f2937;
+            margin: 32px 0 16px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #374151;
+            margin: 24px 0 12px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            margin: 24px 0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        ol, ul {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: #4b5563;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #14b8a6;
+        }
+
+        .not-implemented {
+            opacity: 0.4;
+        }
+
+        .note {
+            background: #f0fdfa;
+            border-left: 4px solid #14b8a6;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .note p {
+            margin: 0;
+            color: #115e59;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <img class="logo-icon" src='../src/icons/mindhub-icon.svg' />
+            <span class="logo-text">Guía</span>
+        </div>
+
+        <nav class="nav-section">
+            <div class="nav-title">MINDHUB</div>
+            <div class="nav-item active" data-section="inicio-sesion">Inicio de sesión</div>
+            <div class="nav-item" data-section="registro">Registro</div>
+            <div class="nav-item" data-section="salir-app">Salir de la app</div>
+            <div class="nav-item" data-section="libreria">Librería</div>
+            <div class="nav-item" data-section="actualizaciones">Actualizaciones</div>
+            <div class="nav-item" data-section="notificaciones">Notificaciones</div>
+            <div class="nav-item" data-section="rendimiento">Rendimiento</div>
+            <div class="nav-item-toggle" data-section="configuracion">
+                <span>Configuración</span>
+                <span class="nav-toggle-icon">▼</span>
+            </div>
+            <div class="nav-subitems">
+                <div class="nav-subitem" data-section="cuenta">Cuenta</div>
+                <div class="nav-subitem" data-section="accesibilidad">Accesibilidad</div>
+                <div class="nav-subitem" data-section="notificaciones-config">Notificaciones</div>
+                <div class="nav-subitem" data-section="nube">Nube</div>
+                <div class="nav-subitem" data-section="almacenamiento">Almacenamiento</div>
+                <div class="nav-subitem" data-section="descargas">Descargas</div>
+            </div>
+        </nav>
+
+        <div id="salir" class="logout-btn">
+            <img style="width: 10px; height: 10px;" src="../src/icons/salir.svg"/>
+            <span>Salir</span>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section class="content-section active" id="inicio-sesion">
+            <h1>Inicio de sesión</h1>
+            <p>Al abrir el launcher, lo primero que nos pedirá el aplicativo es identificarnos. Para ello, simplemente rellenamos el formulario principal:</p>
+            <img src="../src/imgAyuda/mindhub/inicio_sesion.png" class="image-placeholder" alt="Formulario de inicio de sesión">
+            <p>Si resulta que el usuario no existe, nos saldrá este error:</p>
+            <img src="../src/imgAyuda/mindhub/noexiste_login.png" class="image-placeholder" alt="Error de usuario no existente">
+        </section>
+
+        <section class="content-section" id="registro">
+            <h1>Registro</h1>
+            <p>Para crear una nueva cuenta de MindHub, debemos dirigirnos al formulario de inicio de sesión y pinchar en 'Registrarse':</p>
+            <img src="../src/imgAyuda/mindhub/acceder_registrarse.png" class="image-placeholder" alt="Botón de registrarse">
+            
+            <p>Una vez accedido al formulario de registro, debemos de establecer nuestro nombre de usuario y contraseña.</p>
+            <img src="../src/imgAyuda/mindhub/registrarse.png" class="image-placeholder" alt="Formulario de registro">
+            
+            
+            <p>Para que el correo sea válido, se debe de seguir la estructura estándar de un correo: &lt;nombre_correo&gt;@&lt;proveedor&gt;.&lt;dominio&gt;.</p>
+            
+            <p>Luego, para que la contraseña sea válida, debe de contener 6 o más caracteres.</p>
+            
+            
+        </section>
+        <section class="content-section" id="salir-app">
+            <h1>Salir de la app</h1>
+            <p>Si queremos salir de nuestra aplicación, pulsaremos en el botón correspondiente:</p>
+            <img src="../src/imgAyuda/mindhub/salir_mindhub.png" class="image-placeholder" alt="Botón de salir">
+            
+        </section>
+
+        <section class="content-section" id="libreria">
+            <h1>Librería</h1>
+            <p>Aquí tenemos a nuestra disposición todas las aplicaciones que tenemos instaladas y disponibles a descargar:</p>
+            <img src="../src/imgAyuda/mindhub/libreria.png" class="image-placeholder" alt="Vista de la librería">
+            
+            <p>Para filtrar entre las aplicaciones instaladas y disponibles, pinchamos en 'Instalados' y 'Disponibles'.</p>
+            <img src="../src/imgAyuda/mindhub/filtros_libreria.png" class="image-placeholder" alt="Filtros de aplicaciones">
+            <p>En cuanto a las aplicaciones, podemos acceder pinchando en el menú de tres puntos al changelog y a la eliminación de la aplicación:</p>
+            <img src="../src/imgAyuda/mindhub/menu3ptos_libreria.png" class="image-placeholder" alt="Menú de opciones de aplicación">
+            
+            <p>En caso de que la aplicación se haya movido de lugar, se mostrará el siguiente mensaje por pantalla:</p>
+            <img src="../src/imgAyuda/mindhub/localizacion_libreria.png" class="image-placeholder" alt="Mensaje de aplicación movida">
+        </section>
+
+        <section class="content-section" id="actualizaciones">
+            <h1>Actualizaciones</h1>
+            <p>Para actualizar de manera individual una aplicación, simplemente pulsamos en su botón correspondiente.</p>
+            <img src="../src/imgAyuda/mindhub/actualizar_actualizaciones.png" class="image-placeholder" alt="Actualizar una app">
+            <p>Sin embargo, si queremos instalar todas las actualizaciones disponibles, pinchamos en 'Actualizar todo':</p>
+            <img src="../src/imgAyuda/mindhub/actualizartodo_actualizaciones.png" class="image-placeholder" alt="Actualizar todo">
+        </section>
+
+        <section class="content-section" id="notificaciones">
+            <h1>Notificaciones</h1>
+            <p>Cada notificación posee información que nos permite conocer el estado de nuestras tareas. Existen 4 tipos de notificaciones:</p>
+            <ul>
+                <li>Creada</li>
+                <img src="../src/imgAyuda/mindhub/creada_notificaciones.png" class="image-placeholder" alt="Creada">
+                <li>Advertencia</li>
+                <img src="../src/imgAyuda/mindhub/advertencia_notificaciones.png" class="image-placeholder" alt="Creada">
+                <li>Vencimiento</li>
+                <img src="../src/imgAyuda/mindhub/vencida_notificaciones.png" class="image-placeholder" alt="Creada">
+                <li>Realizada</li>
+                <img src="../src/imgAyuda/mindhub/realizada_notificaciones.png" class="image-placeholder" alt="Creada">
+            </ul>
+            
+            <p>Una notificación posee la siguiente información:</p>
+            <img src="../src/imgAyuda/mindhub/info_notificaciones.png" class="image-placeholder" alt="Información de notificación">
+            
+            <p>Para tener información más detallada de la notificación, pinchamos en 'más información':</p>
+            <img src="../src/imgAyuda/mindhub/masinfo_notificaciones.png" class="image-placeholder" alt="Detalle de notificación">
+            
+            <p>Si una vez leída la notificación queremos acceder a la app, pinchamos en 'Abrir':</p>
+            <img src="../src/imgAyuda/mindhub/abrir_notificaciones.png" class="image-placeholder" alt="Botón abrir app desde notificación">
+        </section>
+
+        <section class="content-section" id="rendimiento">
+            <h1>Rendimiento</h1>
+            <p class="not-implemented">Para generar un nuevo informe, tenemos a nuestra disposición tres opciones:</p>
+            <ul class="not-implemented">
+                <li>App</li>
+                <li>Mes</li>
+                <li>Año</li>
+            </ul>
+            <img src="../src/imgAyuda/mindhub/opciones_rendimiento.png" class="not-implemented image-placeholder" alt="Filtros de informe">
+            <p class="not-implemented">Una vez configurado, para generar el informe pulsamos en el botón 'Generar':</p>
+            <img src="../src/imgAyuda/mindhub/generar_rendimiento.png" class="image-placeholder not-implemented" alt="Generador de informes">
+        </section>
+
+        <section class="content-section" id="configuracion">
+            <h1>Configuración</h1>
+            <p>Para acceder a la configuración de nuestro launcher, nos dirigimos al icono de nuestra cuenta abajo a la izquierda:</p>
+            <img src="../src/imgAyuda/mindhub/acceder_configuracion.png" class="image-placeholder" alt="Acceso a configuración">
+            
+            <p>Para configurar nuestro launcher, tenemos a nuestra disposición las siguientes pestañas:</p>
+            <ul>
+                <li>Cuenta</li>
+                <li>Accesibilidad</li>
+                <li>Notificaciones</li>
+                <li>Nube</li>
+                <li>Almacenamiento</li>
+                <li>Descargas</li>
+            </ul>
+        </section>
+
+        <section class="content-section" id="cuenta">
+            <h1>Cuenta</h1>
+            <p>Desde aquí podremos <span class="not-implemented">cambiar la contraseña de nuestra cuenta y</span> cerrar sesión pulsando en el botón correspondiente:</p>
+            <img src="../src/imgAyuda/mindhub/cerrar_cuenta.png" class="image-placeholder" alt="Configuración de cuenta">
+        </section>
+
+        <section class="content-section" id="accesibilidad">
+            <h1>Accesibilidad</h1>
+            <p>Desde aquí podremos cambiar el tema de nuestra aplicación a las siguientes configuraciones:</p>
+            <ul>
+                <li>Claro</li>
+                <li>Oscuro</li>
+                <li>Sistema</li>
+            </ul>
+            <p>Por defecto, el tema se mantiene en "Claro".</p>
+            <img src="../src/imgAyuda/mindhub/tema_accesibilidad.png" class="image-placeholder" alt="Configuración de tema">
+            
+            <p class="not-implemented">Posteriormente, podemos ajustar el tamaño del texto en caso de que no se pueda ver con claridad la letra:</p>
+            <img src="../src/imgAyuda/mindhub/tamano_accesibilidad.png" class="image-placeholder not-implemented" alt="Ajuste de tamaño de texto">
+            
+            <p class="not-implemented">Además, podremos reducir el número de animaciones que ocurren en la aplicación pinchando en este switch:</p>
+            <img src="../src/imgAyuda/mindhub/movimientos_accesibilidad.png" class="image-placeholder not-implemented" alt="Reducir animaciones">
+        </section>
+
+        <section class="content-section" id="notificaciones-config">
+            <h1>Notificaciones</h1>
+            <p class="not-implemented">Podemos decidir si se muestran las notificaciones del sistema y si se reproducirá sonido al mostrarse pinchando en estos switch:</p>
+            <img src="../src/imgAyuda/mindhub/notificaciones_notificaciones.png" class="image-placeholder not-implemented" alt="Configuración de notificaciones">
+        </section>
+
+        <section class="content-section" id="nube">
+            <h1>Nube</h1>
+            <p class="not-implemented">En caso de querer subir los informes generados a la nube, activamos esta opcionalidad pinchando en este switch:</p>
+            <img src="../src/imgAyuda/mindhub/nube_nube.png" class="image-placeholder not-implemented" alt="Configuración de nube">
+        </section>
+
+        <section class="content-section" id="almacenamiento">
+            <h1>Almacenamiento</h1>
+            <p class="not-implemented">Aquí podemos ver cuánto pesan nuestras aplicaciones respecto al resto de información en el disco:</p>
+            <img src="../src/imgAyuda/mindhub/peso_almacenamiento.png" class="image-placeholder not-implemented" alt="Vista de almacenamiento">
+            
+            <p class="not-implemented">Además, podemos gestionar las aplicaciones instaladas. Si queremos desinstalar una app, simplemente nos tendremos que dirigir a su casilla correspondiente y posteriormente pinchar en el icono de la basura:</p>
+            <img src="../src/imgAyuda/mindhub/asignaturas_almacenamiento.png" class="image-placeholder not-implemented" alt="Gestión de aplicaciones">
+        </section>
+
+        <section class="content-section" id="descargas">
+            <h1>Descargas</h1>
+            <p class="not-implemented">Desde esta pestaña podemos modificar la localización de nuestras asignaturas y archivos generados en la aplicación. Para modificar la ruta, o bien podemos escribirla en el campo de texto o la buscamos a través del explorador de archivos correspondiente:</p>
+            <img src="../src/imgAyuda/mindhub/ruta_descargas.png" class="image-placeholder not-implemented" alt="Configuración de ruta de descargas">
+            
+            <p class="not-implemented">Además, si queremos automatizar la instalación de actualizaciones, podemos habilitar esta opción pinchando en este switch:</p>
+            <img src="../src/imgAyuda/mindhub/actualizaciones_descargas.png" class="image-placeholder not-implemented" alt="Actualizaciones automáticas">
+        </section>
+    </main>
+
+    <script>
+        // Toggle del menú de configuración en el sidebar
+        const configToggle = document.querySelector('.nav-item-toggle');
+        configToggle.addEventListener('click', (e) => {
+            // Si hacemos click en el texto, también navegamos a la sección
+            if (e.target.tagName === 'SPAN' && !e.target.classList.contains('nav-toggle-icon')) {
+                navigateToSection('configuracion');
+            }
+            configToggle.classList.toggle('open');
+        });
+
+        // Navegación entre secciones
+        const navItems = document.querySelectorAll('.nav-item, .nav-subitem');
+        const sections = document.querySelectorAll('.content-section');
+
+        function navigateToSection(sectionId) {
+            // Remover active de todos los items
+            navItems.forEach(nav => nav.classList.remove('active'));
+            configToggle.classList.remove('active');
+            
+            // Mostrar la sección correspondiente
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === sectionId) {
+                    section.classList.add('active');
+                }
+            });
+
+            // Activar el item correspondiente
+            if (sectionId === 'configuracion') {
+                configToggle.classList.add('active');
+            } else {
+                const activeItem = document.querySelector(`[data-section="${sectionId}"]`);
+                if (activeItem) {
+                    activeItem.classList.add('active');
+                    
+                    // Si es un subitem, abrir el toggle de configuración y marcarlo como activo
+                    if (activeItem.classList.contains('nav-subitem')) {
+                        configToggle.classList.add('open');
+                        configToggle.classList.add('active');
+                    }
+                }
+            }
+
+            // Scroll al inicio
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const sectionId = item.dataset.section;
+                navigateToSection(sectionId);
+            });
+        });
+
+        // Navegación cuando se hace click en "Configuración"
+        configToggle.addEventListener('click', (e) => {
+            // Solo navegar si hacemos click en el texto, no en la flecha
+            if (!e.target.classList.contains('nav-toggle-icon')) {
+                navigateToSection('configuracion');
+            }
+        });
+
+        // Cerrar sesión
+        document.querySelector('.logout-btn').addEventListener('click', () => {
+            window.history.back();
+        });
+
+
+        // Salir de ayuda
+        const salirBtn = document.getElementById("salir");
+
+        salirBtn.addEventListener('click', () => {
+            window.close();
+        });
+    </script>
+</body>
+</html>

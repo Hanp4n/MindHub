@@ -71,7 +71,7 @@ const MindHubPageMenu = ({changeQuitting}: MindHubPageMenuProps) => {
         <div className="flex items-center gap-2">
           <div className="w-10 h-10">
             <img src={mindhubIcono} />
-          </div>
+          </div>  
           <p className="text-2xl">MindHub</p>
         </div>
         <div className="flex flex-col gap-2">
@@ -88,7 +88,7 @@ const MindHubPageMenu = ({changeQuitting}: MindHubPageMenuProps) => {
           </div>
           <p>Salir</p>
         </div>
-        <div onClick={() => {}} className="flex gap-3">
+        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3">
           <div className="w-6">
             <img src={ayudaIcon} />
           </div>
