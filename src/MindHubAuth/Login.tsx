@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../icons/Group 11.svg';
-import { supabase } from '../supabaseClient'; 
+import { supabase } from '../supabaseClient';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 
@@ -16,7 +16,7 @@ function Login() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateEmail(correoElectronico)) {
-      setError("Introduce un correo válido");
+      setError("Introduce un correo válido.\n Estructura estándar de un correo: <nombre_correo>@<proveedor>.<dominio>.");
       return;
     }
     if (!contrasena) {
@@ -24,17 +24,26 @@ function Login() {
       return;
     }
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error: supabaseError } = await supabase.auth.signInWithPassword({
       email: correoElectronico,
       password: contrasena,
     });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      window.ipcRenderer.send('abrir-mindHub');
-      window.close();
+    if (supabaseError) {
+      switch (supabaseError.message) {
+        case "Invalid login credentials":
+          setError("Credenciales inválidas. Revise que la contraseña esté bien escrita.");
+          break;
+        default:
+          setError(supabaseError.message);
+          break;
+      }
+      return;
     }
+
+    window.ipcRenderer.send('abrir-mindHub');
+    window.close();
+    
   }
 
   const handleRegister = () => {
@@ -43,12 +52,12 @@ function Login() {
 
 
   return (
-    <div className='w-screen h-screen flex items-center justify-center flex-col gap-5'>
+    <div className='w-screen h-screen flex items-center justify-center flex-col gap-5 '>
       <div className='flex flex-row items-center gap-2'>
-        <img src={Logo} className='w-15'/>
+        <img src={Logo} className='w-15' />
         <h1 className='text-4xl'>MindHub</h1>
       </div>
-      <form onSubmit={handleLogin} className='flex flex-col gap-5 rounded-2xl shadow-xl p-10'>
+      <form onSubmit={handleLogin} className='flex flex-col gap-5 rounded-2xl shadow-xl p-10 w-[505px]'>
         <div className='login-fields flex flex-col gap-5 w-full'>
           <label>
             <p>Correo electrónico</p>
