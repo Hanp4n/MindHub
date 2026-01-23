@@ -94,6 +94,13 @@ ipcMain.on('abrir-login', () => {
     },
   })
 
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.key === 'F1') {
+      event.preventDefault();
+      abrirAyudaMH();
+    }
+  });
+
   // if (VITE_DEV_SERVER_URL) {
   //   win.webContents.openDevTools()
   // }
@@ -137,9 +144,9 @@ ipcMain.on('abrir-mindHub', () => {
     }
   });
 
-  if (VITE_DEV_SERVER_URL) {
-    win2.webContents.openDevTools()
-  }
+  // if (VITE_DEV_SERVER_URL) {
+  //   win2.webContents.openDevTools()
+  // }
 
   if (process.env.VITE_DEV_SERVER_URL) {
     win2.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/mindHub.html`);
@@ -188,9 +195,9 @@ ipcMain.on('abrir-korolang', () => {
     },
   })
 
-  if (VITE_DEV_SERVER_URL) {
-    win3.webContents.openDevTools()
-  }
+  // if (VITE_DEV_SERVER_URL) {
+  //   win3.webContents.openDevTools()
+  // }
 
   if (process.env.VITE_DEV_SERVER_URL) {
     win3.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/koroLang.html`);
@@ -238,9 +245,9 @@ function abrirAyudaMH() {
     },
   })
 
-  if (VITE_DEV_SERVER_URL) {
-    win4.webContents.openDevTools()
-  }
+  // if (VITE_DEV_SERVER_URL) {
+  //   win4.webContents.openDevTools()
+  // }
 
   if (process.env.VITE_DEV_SERVER_URL) {
     win4.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudamh.html`);
@@ -278,9 +285,9 @@ function abrirAyudaKL() {
     },
   })
 
-  if (VITE_DEV_SERVER_URL) {
-    win5.webContents.openDevTools()
-  }
+  // if (VITE_DEV_SERVER_URL) {
+  //   win5.webContents.openDevTools()
+  // }
 
   if (process.env.VITE_DEV_SERVER_URL) {
     win5.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudakl.html`);

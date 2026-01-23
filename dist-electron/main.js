@@ -45,6 +45,12 @@ ipcMain.on("abrir-login", () => {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
+  win.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F1") {
+      event.preventDefault();
+      abrirAyudaMH();
+    }
+  });
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/login.html`);
   } else {
@@ -74,9 +80,6 @@ ipcMain.on("abrir-mindHub", () => {
       abrirAyudaMH();
     }
   });
-  if (VITE_DEV_SERVER_URL) {
-    win2.webContents.openDevTools();
-  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win2.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/mindHub.html`);
   } else {
@@ -104,9 +107,6 @@ ipcMain.on("abrir-korolang", () => {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
-  if (VITE_DEV_SERVER_URL) {
-    win3.webContents.openDevTools();
-  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win3.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/koroLang.html`);
   } else {
@@ -141,9 +141,6 @@ function abrirAyudaMH() {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
-  if (VITE_DEV_SERVER_URL) {
-    win4.webContents.openDevTools();
-  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win4.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudamh.html`);
   } else {
@@ -172,9 +169,6 @@ function abrirAyudaKL() {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
-  if (VITE_DEV_SERVER_URL) {
-    win5.webContents.openDevTools();
-  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win5.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudakl.html`);
   } else {

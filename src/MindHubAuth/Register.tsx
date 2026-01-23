@@ -4,6 +4,7 @@ import Logo from '../icons/Group 11.svg';
 import { supabase } from '../supabaseClient'; 
 import DialogInfo from '../dialogComponents/DialogInfo';
 import { Button } from '../components/ui/button';
+import ayudaIcon from "../icons/ayudaIcon.svg"
 
 
 function Register() {
@@ -107,6 +108,11 @@ function Register() {
           >
             Registrarse
           </Button>
+        </div>
+        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
+          <div className="w-6 opacity-50">
+            <img src={ayudaIcon} />
+          </div>
         </div>
       </div>
     </div>

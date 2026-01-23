@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../icons/Group 11.svg';
-import { supabase } from '../supabaseClient'; 
+import { supabase } from '../supabaseClient';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+
+import ayudaIcon from "../icons/ayudaIcon.svg"
 
 function Login() {
   const [correoElectronico, setCorreoElectronico] = useState("");
@@ -45,7 +47,7 @@ function Login() {
   return (
     <div className='w-screen h-screen flex items-center justify-center flex-col gap-5'>
       <div className='flex flex-row items-center gap-2'>
-        <img src={Logo} className='w-15'/>
+        <img src={Logo} className='w-15' />
         <h1 className='text-4xl'>MindHub</h1>
       </div>
       <form onSubmit={handleLogin} className='flex flex-col gap-5 rounded-2xl shadow-xl p-10'>
@@ -80,6 +82,11 @@ function Login() {
             <Button variant="white" type='button' onClick={handleRegister} className='p-2 px-5'>Registrarse</Button>
             <Button variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>Acceder</Button>
           </span>
+        </div>
+        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
+          <div className="w-6 opacity-50">
+            <img src={ayudaIcon} />
+          </div>
         </div>
       </form>
     </div>
