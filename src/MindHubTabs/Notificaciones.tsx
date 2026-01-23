@@ -9,6 +9,7 @@ import exitoTarea from "../icons/exitoTarea.svg";
 import BorderedButton from "../BorderedButton";
 import { Button } from "../components/ui/button";
 import DialogInfo from "../dialogComponents/DialogInfo";
+import { TooltipPref } from "../components/ui/tooltipPref";
 
 type NotificacionObj = {
   nombreApp: string,
@@ -51,8 +52,9 @@ const Notificacion = ({ imgNotificacion, bgColor, infoNotificacion, changeAbrir,
 
         <div className="flex flex-col h-full justify-around">
           <p>
-            <span className="font-bold">{infoNotificacion.nombreApp}: </span> 
-            {infoNotificacion.nombreTarea}
+            <TooltipPref contenedor={<span className="font-bold">{infoNotificacion.nombreApp}: </span> } contenido={<p>Nombre de la aplicación</p>}/>
+            
+            <span>{infoNotificacion.nombreTarea}</span>
           </p>
           <p>{infoNotificacion.fechaNotificacion} - {infoNotificacion.horaNotificacion}</p>
         </div>

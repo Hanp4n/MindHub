@@ -19,6 +19,16 @@ function createWindow() {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
+  win.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F1") {
+      event.preventDefault();
+      abrirAyudaMH();
+    }
+    if (input.key === "F12" && win) {
+      event.preventDefault();
+      win.webContents.openDevTools();
+    }
+  });
   win.webContents.on("did-finish-load", () => {
     win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
   });
@@ -50,6 +60,13 @@ ipcMain.on("abrir-login", () => {
       event.preventDefault();
       abrirAyudaMH();
     }
+<<<<<<< HEAD
+=======
+    if (input.key === "F12" && win) {
+      event.preventDefault();
+      win.webContents.openDevTools();
+    }
+>>>>>>> 9fb53e619c2a81161ec75aceadb41204c0685442
   });
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/login.html`);
@@ -79,6 +96,10 @@ ipcMain.on("abrir-mindHub", () => {
       event.preventDefault();
       abrirAyudaMH();
     }
+    if (input.key === "F12" && win2) {
+      event.preventDefault();
+      win2.webContents.openDevTools();
+    }
   });
   if (process.env.VITE_DEV_SERVER_URL) {
     win2.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/mindHub.html`);
@@ -107,6 +128,19 @@ ipcMain.on("abrir-korolang", () => {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
+<<<<<<< HEAD
+=======
+  win3.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F1") {
+      event.preventDefault();
+      abrirAyudaKL();
+    }
+    if (input.key === "F12" && win3) {
+      event.preventDefault();
+      win3.webContents.openDevTools();
+    }
+  });
+>>>>>>> 9fb53e619c2a81161ec75aceadb41204c0685442
   if (process.env.VITE_DEV_SERVER_URL) {
     win3.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/koroLang.html`);
   } else {
@@ -141,6 +175,15 @@ function abrirAyudaMH() {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
+<<<<<<< HEAD
+=======
+  win4.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F12" && win4) {
+      event.preventDefault();
+      win4.webContents.openDevTools();
+    }
+  });
+>>>>>>> 9fb53e619c2a81161ec75aceadb41204c0685442
   if (process.env.VITE_DEV_SERVER_URL) {
     win4.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudamh.html`);
   } else {
@@ -169,6 +212,15 @@ function abrirAyudaKL() {
       preload: path.join(__dirname$1, "preload.mjs")
     }
   });
+<<<<<<< HEAD
+=======
+  win5.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F12" && win5) {
+      event.preventDefault();
+      win5.webContents.openDevTools();
+    }
+  });
+>>>>>>> 9fb53e619c2a81161ec75aceadb41204c0685442
   if (process.env.VITE_DEV_SERVER_URL) {
     win5.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/ayudakl.html`);
   } else {
