@@ -30,20 +30,20 @@ type NotificacionProps = {
 const Notificacion = ({ imgNotificacion, bgColor, infoNotificacion, changeAbrir, vencida, masInfo }: NotificacionProps) => {
   const [isOpeningMasInfo, setIsOpeningMasInfo] = useState(false);
 
-  function handleAbrir(){
-    if(changeAbrir){
+  function handleAbrir() {
+    if (changeAbrir) {
       changeAbrir();
     }
   }
 
   return (
-    <div 
+    <div
       className="flex items-center justify-between hover:bg-gray-100 p-3 cursor-pointer"
     >
-      {isOpeningMasInfo && <DialogInfo titulo="Más información" mensaje={masInfo} onClose={() => setIsOpeningMasInfo(false)}/>}
+      {isOpeningMasInfo && <DialogInfo titulo="Más información" mensaje={masInfo} onClose={() => setIsOpeningMasInfo(false)} />}
       <div className="flex gap-4 h-full">
         <div className={"cursor-pointer border border-[var(--mh-dark-gray)] rounded-xl flex justify-center items-center w-20 h-20"}
-          style={{backgroundColor: bgColor}}
+          style={{ backgroundColor: bgColor }}
         >
           <div className="w-6">
             <img src={imgNotificacion} />
@@ -52,20 +52,30 @@ const Notificacion = ({ imgNotificacion, bgColor, infoNotificacion, changeAbrir,
 
         <div className="flex flex-col h-full justify-around">
           <p>
-            <TooltipPref contenedor={<span className="font-bold">{infoNotificacion.nombreApp}: </span> } contenido={<p>Nombre de la aplicación</p>}/>
-            
-            <span>{infoNotificacion.nombreTarea}</span>
+            <TooltipPref contenedor={<span className="font-bold">{infoNotificacion.nombreApp}: </span>} contenido={<p>Nombre de la aplicación</p>} />
+            <TooltipPref contenedor={<span>{infoNotificacion.nombreTarea}</span>} contenido={<p>Nombre de la tarea</p>} />
+
           </p>
-          <p>{infoNotificacion.fechaNotificacion} - {infoNotificacion.horaNotificacion}</p>
+          <p>
+            <TooltipPref contenedor={<span>{infoNotificacion.fechaNotificacion}</span>} contenido={<p>Fecha de notificación</p>} />
+            -
+            <TooltipPref contenedor={<span>{infoNotificacion.horaNotificacion}</span>} contenido={<p>Hora de notificación</p>} />
+
+
+          </p>
         </div>
       </div>
 
       <div className="flex gap-5">
         {!vencida && (
-          <Button onClick={handleAbrir} variant={"bordered"}>
-            <img src={abrir} />
-            <p>Abrir</p>
-          </Button>
+          <TooltipPref contenedor={
+            <div>
+              <Button onClick={handleAbrir} variant={"bordered"}>
+                <img src={abrir} />
+                <p>Abrir</p>
+              </Button>
+            </div>
+          } contenido={<p>Abrir aplicación</p>} />
         )}
         <Button onClick={() => setIsOpeningMasInfo(true)} variant={"bordered"}>
           <img src={masInfoIcon} />
@@ -83,55 +93,55 @@ const Notificaciones = () => {
     <div className="flex flex-col gap-10 p-6 w-full overflow-y-visible">
       <h1 className="text-2xl font-bold">Notificaciones</h1>
       <div className="flex flex-col gap-7">
-        <Notificacion 
-        vencida={false}
-        masInfo="Quedan 2 días para la entrega de: 10 minute conversation. Fecha límite: 10 nov 2025 - 23:59"
-        changeAbrir={() => window.ipcRenderer.send('abrir-korolang')}
-        infoNotificacion={{
-          nombreApp: "KoroLang",
-          nombreTarea: "10 minute conversation",
-          fechaNotificacion: "8 nov 2025",
-          horaNotificacion: "17:00"
-        }}
-        bgColor={"var(--mh-yellow)"} 
-        imgNotificacion={advertencia} />
+        <Notificacion
+          vencida={false}
+          masInfo="Quedan 2 días para la entrega de: 10 minute conversation. Fecha límite: 10 nov 2025 - 23:59"
+          changeAbrir={() => window.ipcRenderer.send('abrir-korolang')}
+          infoNotificacion={{
+            nombreApp: "KoroLang",
+            nombreTarea: "10 minute conversation",
+            fechaNotificacion: "8 nov 2025",
+            horaNotificacion: "17:00"
+          }}
+          bgColor={"var(--mh-yellow)"}
+          imgNotificacion={advertencia} />
 
-        <Notificacion 
-        vencida={false}
-        masInfo="Se ha creado una nueva tarea: Social Media Essay. Fecha límite: 20 nov 2025 - 23:59"
-        changeAbrir={() => window.ipcRenderer.send('abrir-korolang')}
-        infoNotificacion={{
-          nombreApp: "KoroLang",
-          nombreTarea: "Social Media Essay",
-          fechaNotificacion: "9 nov 2025",
-          horaNotificacion: "22:00"
-        }}
-        bgColor={"var(--mh-blue)"} 
-        imgNotificacion={nuevaTarea} />
+        <Notificacion
+          vencida={false}
+          masInfo="Se ha creado una nueva tarea: Social Media Essay. Fecha límite: 20 nov 2025 - 23:59"
+          changeAbrir={() => window.ipcRenderer.send('abrir-korolang')}
+          infoNotificacion={{
+            nombreApp: "KoroLang",
+            nombreTarea: "Social Media Essay",
+            fechaNotificacion: "9 nov 2025",
+            horaNotificacion: "22:00"
+          }}
+          bgColor={"var(--mh-blue)"}
+          imgNotificacion={nuevaTarea} />
 
-        <Notificacion 
-        vencida={true}
-        masInfo="Se ha vencido el plazo de: Code documentation."
-        infoNotificacion={{
-          nombreApp: "KoroLang",
-          nombreTarea: "Code documentation",
-          fechaNotificacion: "9 nov 2025",
-          horaNotificacion: "23:59"
-        }}
-        bgColor={"var(--mh-red)"} 
-        imgNotificacion={vencidaTarea} />
+        <Notificacion
+          vencida={true}
+          masInfo="Se ha vencido el plazo de: Code documentation."
+          infoNotificacion={{
+            nombreApp: "KoroLang",
+            nombreTarea: "Code documentation",
+            fechaNotificacion: "9 nov 2025",
+            horaNotificacion: "23:59"
+          }}
+          bgColor={"var(--mh-red)"}
+          imgNotificacion={vencidaTarea} />
 
-        <Notificacion 
-        vencida={true}
-        masInfo="Se entregó en plazo la tarea: 10 minute conversation."
-        infoNotificacion={{
-          nombreApp: "KoroLang",
-          nombreTarea: "10 minute conversation",
-          fechaNotificacion: "9 nov 2025",
-          horaNotificacion: "23:59"
-        }}
-        bgColor={"var(--mh-green)"} 
-        imgNotificacion={exitoTarea} />
+        <Notificacion
+          vencida={true}
+          masInfo="Se entregó en plazo la tarea: 10 minute conversation."
+          infoNotificacion={{
+            nombreApp: "KoroLang",
+            nombreTarea: "10 minute conversation",
+            fechaNotificacion: "9 nov 2025",
+            horaNotificacion: "23:59"
+          }}
+          bgColor={"var(--mh-green)"}
+          imgNotificacion={exitoTarea} />
       </div>
     </div>
   );

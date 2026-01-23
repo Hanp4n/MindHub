@@ -18,6 +18,7 @@ import {
 } from "../components/ui/select"
 import { Button } from "../components/ui/button";
 import { supabase } from "../supabaseClient";
+import { TooltipPref } from "../components/ui/tooltipPref";
 
 type RendimientoCardProps = {
   titulo: string,
@@ -103,45 +104,60 @@ const Rendimiento = () => {
     overflow-y">
       <h1 className="text-2xl font-bold">Rendimiento</h1>
       <div className="flex flex-wrap h-fit justify-between max-w-[800px]">
-        <Select value={app} onValueChange={setApp}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="App" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="korolang">KoroLang</SelectItem>
-            <SelectItem value="korocode">KoroCode</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={month} onValueChange={setMonth}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Mes" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">Enero</SelectItem>
-            <SelectItem value="2">Febrero</SelectItem>
-            <SelectItem value="3">Marzo</SelectItem>
-            <SelectItem value="4">Abril</SelectItem>
-            <SelectItem value="5">Mayo</SelectItem>
-            <SelectItem value="6">Junio</SelectItem>
-            <SelectItem value="7">Julio</SelectItem>
-            <SelectItem value="8">Agosto</SelectItem>
-            <SelectItem value="9">Septiembre</SelectItem>
-            <SelectItem value="10">Octubre</SelectItem>
-            <SelectItem value="11">Noviembre</SelectItem>
-            <SelectItem value="12">Diciembre</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={year} onValueChange={setYear}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Año" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="2023">2023</SelectItem>
-            <SelectItem value="2024">2024</SelectItem>
-            <SelectItem value="2025">2025</SelectItem>
-            <SelectItem value="2026">2026</SelectItem>
-          </SelectContent>
-        </Select>
+
+        <TooltipPref contenedor={
+          <div>
+            <Select value={app} onValueChange={setApp}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="App" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="korolang">KoroLang</SelectItem>
+                <SelectItem value="korocode">KoroCode</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        } contenido={<p>Aplicación de origen</p>}/>
+        <TooltipPref contenedor={
+          <div>
+            <Select value={month} onValueChange={setMonth}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Mes" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Enero</SelectItem>
+                <SelectItem value="2">Febrero</SelectItem>
+                <SelectItem value="3">Marzo</SelectItem>
+                <SelectItem value="4">Abril</SelectItem>
+                <SelectItem value="5">Mayo</SelectItem>
+                <SelectItem value="6">Junio</SelectItem>
+                <SelectItem value="7">Julio</SelectItem>
+                <SelectItem value="8">Agosto</SelectItem>
+                <SelectItem value="9">Septiembre</SelectItem>
+                <SelectItem value="10">Octubre</SelectItem>
+                <SelectItem value="11">Noviembre</SelectItem>
+                <SelectItem value="12">Diciembre</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+        } contenido={<p>Mes seleccionado</p>}/>
+        <TooltipPref contenedor={
+          <div>
+            <Select value={year} onValueChange={setYear}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Año" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2023">2023</SelectItem>
+                <SelectItem value="2024">2024</SelectItem>
+                <SelectItem value="2025">2025</SelectItem>
+                <SelectItem value="2026">2026</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        } contenido={<p>Año seleccionado</p>}/>
+
 
         <Button onClick={generarInforme} className="shadow-lg bg-[var(--mh-mid-light-turquoise)] flex items-center justify-center gap-3 px-3 rounded-sm"><div className="w-4"><img src={generarInformeIcon} /></div><p>Generar</p></Button>
       </div>

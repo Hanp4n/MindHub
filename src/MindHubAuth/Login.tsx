@@ -6,11 +6,13 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 
 import ayudaIcon from "../icons/ayudaIcon.svg"
+import { Spinner } from '../components/ui/spinner';
 
 function Login() {
   const [correoElectronico, setCorreoElectronico] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
+  const [isAccediendo, setIsAccediendo] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -26,11 +28,12 @@ function Login() {
       return;
     }
     setError("");
+    setIsAccediendo(true);
     const { error: supabaseError } = await supabase.auth.signInWithPassword({
       email: correoElectronico,
       password: contrasena,
     });
-
+    setIsAccediendo(false);
     if (supabaseError) {
       switch (supabaseError.message) {
         case "Invalid login credentials":
@@ -45,7 +48,6 @@ function Login() {
 
     window.ipcRenderer.send('abrir-mindHub');
     window.close();
-    
   }
 
   const handleRegister = () => {
@@ -89,7 +91,12 @@ function Login() {
           </label>
           <span className='flex gap-5'>
             <Button variant="white" type='button' onClick={handleRegister} className='p-2 px-5'>Registrarse</Button>
-            <Button variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>Acceder</Button>
+            <Button variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>
+              <span>Acceder</span>
+              {
+                isAccediendo && <Spinner/>
+              }
+            </Button>
           </span>
         </div>
         <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
