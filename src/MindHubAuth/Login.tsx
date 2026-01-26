@@ -13,6 +13,7 @@ function Login() {
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
   const [isAccediendo, setIsAccediendo] = useState(false);
+  const [isPulsable, setIsPulsable] = useState(true);
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -29,11 +30,13 @@ function Login() {
     }
     setError("");
     setIsAccediendo(true);
+    setIsPulsable(false);
     const { error: supabaseError } = await supabase.auth.signInWithPassword({
       email: correoElectronico,
       password: contrasena,
     });
     setIsAccediendo(false);
+    setIsPulsable(true);
     if (supabaseError) {
       switch (supabaseError.message) {
         case "Invalid login credentials":
@@ -91,7 +94,7 @@ function Login() {
           </label>
           <span className='flex gap-5'>
             <Button variant="white" type='button' onClick={handleRegister} className='p-2 px-5'>Registrarse</Button>
-            <Button variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>
+            <Button disabled={!isPulsable} variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>
               <span>Acceder</span>
               {
                 isAccediendo && <Spinner/>
@@ -99,11 +102,11 @@ function Login() {
             </Button>
           </span>
         </div>
-        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
+        {/* <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
           <div className="w-6 opacity-50">
             <img src={ayudaIcon} />
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   )

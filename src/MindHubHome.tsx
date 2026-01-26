@@ -88,12 +88,12 @@ const MindHubPageMenu = ({changeQuitting}: MindHubPageMenuProps) => {
           </div>
           <p>Salir</p>
         </div>
-        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3">
+        {/* <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3">
           <div className="w-6">
             <img src={ayudaIcon} />
           </div>
           <p>Ayuda</p>
-        </div>
+        </div> */}
         <div onClick={() => {
           navigate("/config")
         }

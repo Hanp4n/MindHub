@@ -79,7 +79,35 @@ const Rendimiento = () => {
     const { data, error } = await supabase
       .schema('mindhub')
       .from('tiempo')
-      .select('cantidad')
+      .select('actividad, cantidad')
+      .eq('id_app', 1)
+      .gte('fecha', startDate)
+      .lte('fecha', endDate);
+
+    if (error) {
+      console.error('Error:', error);
+    } else {
+      console.log('Datos:', data);
+      return data;
+    }
+  }
+
+  const tiempoDeUsoMedioApp = async () => {
+    // const { data: { session } } = await supabase.auth.getSession();
+    // console.log("User ID:", session?.user.id);
+
+    const nextMonth = (Number(month) + 1).toString().padStart(2, '0');
+
+    const startDate = `${year}-${month.padStart(2, '0')}-01`;
+    const endDate = `${year}-${nextMonth}-01`;
+
+    // console.log("Start Date:", startDate);
+    // console.log("End Date:", endDate);
+
+    const { data, error } = await supabase
+      .schema('mindhub')
+      .from('tiempo')
+      .select('actividad, avg(cantidad)')
       .eq('id_app', 1)
       .gte('fecha', startDate)
       .lte('fecha', endDate);
@@ -93,10 +121,12 @@ const Rendimiento = () => {
   }
 
   const generarInforme = async () => {
+    // Tiempo de uso de cada herramienta.
     const tiempoUso = await tiempoDeUsoApp();
-    //tareas enviadas este mes
-    const tareasRealizadas = 15; // Placeholder
-    const TareasVencidas = 3; // Placeholder
+    const tiempoUsoMedio = await tiempoDeUsoMedioApp();
+    //tareas enviadas este mes. De aquí sacamos también las tareas vencidas y realizadas
+    const listaTareas = await listaTareas();
+
   };
 
   return (

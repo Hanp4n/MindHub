@@ -5,6 +5,7 @@ import { supabase } from '../supabaseClient';
 import DialogInfo from '../dialogComponents/DialogInfo';
 import { Button } from '../components/ui/button';
 import ayudaIcon from "../icons/ayudaIcon.svg"
+import { Spinner } from '../components/ui/spinner';
 
 
 function Register() {
@@ -13,6 +14,8 @@ function Register() {
   const [contrasena2, setContrasena2] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isAccediendo, setIsAccediendo] = useState(false);
+  const [isPulsable, setIsPulsable] = useState(true);
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -32,12 +35,17 @@ function Register() {
     }
 
     setError("");
+        setIsAccediendo(true);
+    setIsPulsable(false);
 
     const { error: supabaseError } = await supabase.auth.signUp({
       email: correoElectronico,
       password: contrasena,
     });
 
+    setIsAccediendo(false);
+    setIsAccediendo(false);
+    setIsPulsable(true);
     if (supabaseError) {
       switch (supabaseError.message) {
         case "Password should be at least 6 characters.":
@@ -107,17 +115,22 @@ function Register() {
             Volver
           </Button>
           <Button variant="default"
+            disabled={!isPulsable}
             onClick={handleRegister}
             className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'
           >
-            Registrarse
+            <p>Registrarse</p>
+            {
+              isAccediendo && <Spinner/>
+            }
+            
           </Button>
         </div>
-        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
+        {/* <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
           <div className="w-6 opacity-50">
             <img src={ayudaIcon} />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
