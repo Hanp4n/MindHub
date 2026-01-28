@@ -17,6 +17,8 @@ function Login() {
   const [intentos, setIntentos] = useState(0);
   const [isBloqueado, setIsBloqueado] = useState(false);
 
+  const [isPulsable, setIsPulsable] = useState(true);
+
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

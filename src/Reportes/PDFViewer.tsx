@@ -6,7 +6,7 @@ type Props = {
 
 export default function PDFViewer({
   pdfUrl,
-  width = "600px",
+  width = "100%",
   height = "800px"
 }: Props) {
   if (!pdfUrl) {

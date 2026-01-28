@@ -1,6 +1,6 @@
 import { pdf } from "@react-pdf/renderer";
 import InformeRendimiento from "./InformeRendimiento";
-import { TareaData, TiempoUsoLeerEscribirHablar, TiempoUsoMedioLeerEscribirHablar } from "../MindHubTabs/Rendimiento";
+import { TareaData, TiempoUsoLeerEscribirHablar, TiempoUsoMedioLeerEscribirHablar, TipoTareaData } from "../MindHubTabs/Rendimiento";
 import { Button } from "../components/ui/button";
 
 import generarInformeIcon from "../icons/generar.svg";
@@ -11,15 +11,16 @@ type Props = {
   tareas: TareaData[]
   tiempoUso: TiempoUsoLeerEscribirHablar[]
   tiempoUsoMedio: TiempoUsoMedioLeerEscribirHablar
+  tipoTareas: TipoTareaData
   onGenerated: (pdfUrl: string) => void;
 };
 
 export default function ReportGenerator({
-  mes, anio, tareas, tiempoUso, tiempoUsoMedio, onGenerated
+  mes, anio, tareas, tiempoUso, tiempoUsoMedio, tipoTareas, onGenerated
 }: Props) {
 
   async function generarPDF() {
-    const doc = <InformeRendimiento mes={mes} anio={anio} tareas={tareas} tiempoUso={tiempoUso} tiempoUsoMedio={tiempoUsoMedio} />;
+    const doc = <InformeRendimiento tipoTareas={tipoTareas} mes={mes} anio={anio} tareas={tareas} tiempoUso={tiempoUso} tiempoUsoMedio={tiempoUsoMedio} />;
 
     const blob = await pdf(doc).toBlob();
 

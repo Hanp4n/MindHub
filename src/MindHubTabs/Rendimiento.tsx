@@ -49,6 +49,11 @@ export type TareaData = {
   completada: boolean;
 }
 
+export type TipoTareaData = {
+  speaking: number
+  writing: number
+}
+
 
 const Rendimiento = () => {
   const [app, setApp] = useState("korolang");
@@ -58,6 +63,7 @@ const Rendimiento = () => {
   const [tiempoUso, setTiempoUso] = useState<TiempoUsoLeerEscribirHablar[]>([]);
   const [tiempoUsoMedio, setTiempoUsoMedio] = useState<TiempoUsoMedioLeerEscribirHablar>({} as TiempoUsoLeerEscribirHablar);
   const [tareas, setTareas] = useState<TareaData[]>([])
+  const [tipoTareas, setTipoTareas] = useState({} as TipoTareaData);
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [isReporteGenerado, setIsReporteGenerado] = useState(false);
@@ -158,7 +164,6 @@ const Rendimiento = () => {
         });
       });
 
-      let sumatorioTotal = 0;
       let sumatorioLeer = 0;
       let sumatorioEscribir = 0;
       let sumatorioHablar = 0;
@@ -173,9 +178,15 @@ const Rendimiento = () => {
         hablar: sumatorioHablar / tiempoUsoData.length
       };
 
+      const cuentaTipoTarea: TipoTareaData = {
+        speaking: tareasData.filter(tarea => tarea.tipo === "speaking").length,
+        writing: tareasData.filter(tarea => tarea.tipo === "writing").length
+      }
+
       setTiempoUso(tiempoUsoLeerEscribirHablar);
       setTiempoUsoMedio(tiempoUsoMedioLeerEscribirHablar);
       setTareas(tareasData);
+      setTipoTareas(cuentaTipoTarea);
     }
     
     prepararInforme();
@@ -250,6 +261,7 @@ const Rendimiento = () => {
           tareas={tareas}
           tiempoUso={tiempoUso}
           tiempoUsoMedio={tiempoUsoMedio}
+          tipoTareas={tipoTareas}
           onGenerated={(url) => generarInforme(url)}
         />
 
