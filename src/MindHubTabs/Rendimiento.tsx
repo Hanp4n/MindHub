@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -20,49 +20,47 @@ import { Button } from "../components/ui/button";
 import { supabase } from "../supabaseClient";
 import { TooltipPref } from "../components/ui/tooltipPref";
 
-type RendimientoCardProps = {
-  titulo: string,
-  valor: number,
-  porcentaje: number,
-  ascendente: boolean,
-  observaciones: string
+import ReportGenerator from '../Reportes/ReportGenerator';
+import PDFViewer from '../Reportes/PDFViewer';
+
+
+export type TiempoUsoData = {
+  dia: string
+  actividad: string;
+  cantidad: number;
 }
 
-const RendimientoCard = ({ titulo, valor, porcentaje, ascendente, observaciones }: RendimientoCardProps) => {
-  return (
-    <div className="flex flex-col gap-2 border border-[var(--mh-light-gray)] w-fit p-4 rounded-xl shadow-xl">
-      <div className="flex items-center gap-3">
-        <p className="font-bold">{titulo}</p>
-        {
-          ascendente ?
-            <div className="flex gap-2 border w-fit p-1 px-3 rounded-2xl text-xs"><img src={flechaAsc} /> <p>+{porcentaje}%</p></div> :
-            <div className="flex gap-2 border w-fit p-1 px-3 rounded-2xl text-xs"><img src={flechaDesc} /> <p>-{porcentaje}%</p></div>
-        }
-      </div>
-      <p className="text-2xl font-bold">{valor}</p>
-      <p className="text-[var(--mh-gray)]">{observaciones}</p>
-    </div>
-  );
+export type TiempoUsoLeerEscribirHablar = {
+  dia: string
+  leer: number
+  escribir: number
+  hablar: number
+}
+export type TiempoUsoMedioLeerEscribirHablar = {
+  leer: number
+  escribir: number
+  hablar: number
 }
 
-type chartRegistry = {
-  dia: string;
-  tiempo: number
+export type TareaData = {
+  nombre: string
+  tipo: string;
+  fecha_entrega: string;
+  completada: boolean;
 }
 
-const chartDataDemo: chartRegistry[] = [
-  { dia: "1", tiempo: 1.4 },
-  { dia: "3", tiempo: 5 },
-  { dia: "4", tiempo: 1 },
-  { dia: "5", tiempo: 4 },
-  { dia: "8", tiempo: 1 },
-  { dia: "13", tiempo: 4 },
-]
 
 const Rendimiento = () => {
   const [app, setApp] = useState("korolang");
   const [month, setMonth] = useState("1");
   const [year, setYear] = useState("2026");
+
+  const [tiempoUso, setTiempoUso] = useState<TiempoUsoLeerEscribirHablar[]>([]);
+  const [tiempoUsoMedio, setTiempoUsoMedio] = useState<TiempoUsoMedioLeerEscribirHablar>({} as TiempoUsoLeerEscribirHablar);
+  const [tareas, setTareas] = useState<TareaData[]>([])
+
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [isReporteGenerado, setIsReporteGenerado] = useState(false);
 
   const tiempoDeUsoApp = async () => {
     // const { data: { session } } = await supabase.auth.getSession();
@@ -79,25 +77,111 @@ const Rendimiento = () => {
     const { data, error } = await supabase
       .schema('mindhub')
       .from('tiempo')
-      .select('cantidad')
+      .select('actividad, cantidad, fecha')
       .eq('id_app', 1)
       .gte('fecha', startDate)
       .lte('fecha', endDate);
 
     if (error) {
       console.error('Error:', error);
+      return null;
     } else {
       console.log('Datos:', data);
-      return data;
+      const registros: TiempoUsoData[] = [];
+
+      data.map(item => {
+        registros.push({
+          dia: item.fecha,
+          actividad: item.actividad,
+          cantidad: item.cantidad
+        })
+      })
+
+      return registros;
     }
   }
 
-  const generarInforme = async () => {
-    const tiempoUso = await tiempoDeUsoApp();
-    //tareas enviadas este mes
-    const tareasRealizadas = 15; // Placeholder
-    const TareasVencidas = 3; // Placeholder
+  const listaTareas = async () => {
+    // const { data: { session } } = await supabase.auth.getSession();
+    // console.log("User ID:", session?.user.id);
+
+    const nextMonth = (Number(month) + 1).toString().padStart(2, '0');
+
+    const startDate = `${year}-${month.padStart(2, '0')}-01`;
+    const endDate = `${year}-${nextMonth}-01`;
+
+    // console.log("Start Date:", startDate);
+    // console.log("End Date:", endDate);
+
+    const { data, error } = await supabase
+      .schema('mindhub')
+      .from('tarea')
+      .select('nombre, tipo, fecha_entrega, completada')
+      .eq('id_app', 1)
+      .gte('fecha_entrega', startDate)
+      .lte('fecha_entrega', endDate);
+
+    if (error) {
+      console.error('Error:', error);
+      return null;
+    } else {
+      console.log('Datos:', data);
+      return data as TareaData[];
+    }
+  }
+
+  const generarInforme = async (url: string) => {
+
+    setIsReporteGenerado(true);
+    setPdfUrl(url);
   };
+
+  useEffect(() => {
+
+    const prepararInforme = async () => {
+      const tiempoUsoData = await tiempoDeUsoApp();
+      const tareasData = await listaTareas();
+
+      if (tiempoUsoData == null || tareasData == null) {
+        console.error('No se pudieron obtener todos los datos');
+        return;
+      }
+
+      const tiempoUsoLeerEscribirHablar: TiempoUsoLeerEscribirHablar[] = [];
+
+      tiempoUsoData.forEach(item => {
+        tiempoUsoLeerEscribirHablar.push({
+          dia: item.dia,
+          leer: item.actividad === 'leer' ? item.cantidad : 0,
+          escribir: item.actividad === 'escribir' ? item.cantidad : 0,
+          hablar: item.actividad === 'hablar' ? item.cantidad : 0
+        });
+      });
+
+      let sumatorioTotal = 0;
+      let sumatorioLeer = 0;
+      let sumatorioEscribir = 0;
+      let sumatorioHablar = 0;
+
+      tiempoUsoData.filter((tiempo: TiempoUsoData) => tiempo.actividad === "leer").forEach(item => sumatorioLeer += item.cantidad);
+      tiempoUsoData.filter((tiempo: TiempoUsoData) => tiempo.actividad === "escribir").forEach(item => sumatorioEscribir += item.cantidad);
+      tiempoUsoData.filter((tiempo: TiempoUsoData) => tiempo.actividad === "hablar").forEach(item => sumatorioHablar += item.cantidad);
+
+      const tiempoUsoMedioLeerEscribirHablar: TiempoUsoMedioLeerEscribirHablar = {
+        leer: sumatorioLeer / tiempoUsoData.length,
+        escribir: sumatorioEscribir / tiempoUsoData.length,
+        hablar: sumatorioHablar / tiempoUsoData.length
+      };
+
+      setTiempoUso(tiempoUsoLeerEscribirHablar);
+      setTiempoUsoMedio(tiempoUsoMedioLeerEscribirHablar);
+      setTareas(tareasData);
+    }
+    
+    prepararInforme();
+
+  }, [month, app, year]);
+
 
   return (
     <div className="flex flex-col gap-10 p-6 w-full
@@ -117,7 +201,7 @@ const Rendimiento = () => {
               </SelectContent>
             </Select>
           </div>
-        } contenido={<p>Aplicación de origen</p>}/>
+        } contenido={<p>Aplicación de origen</p>} />
         <TooltipPref contenedor={
           <div>
             <Select value={month} onValueChange={setMonth}>
@@ -141,7 +225,7 @@ const Rendimiento = () => {
             </Select>
           </div>
 
-        } contenido={<p>Mes seleccionado</p>}/>
+        } contenido={<p>Mes seleccionado</p>} />
         <TooltipPref contenedor={
           <div>
             <Select value={year} onValueChange={setYear}>
@@ -156,21 +240,30 @@ const Rendimiento = () => {
               </SelectContent>
             </Select>
           </div>
-        } contenido={<p>Año seleccionado</p>}/>
+        } contenido={<p>Año seleccionado</p>} />
 
 
-        <Button onClick={generarInforme} className="shadow-lg bg-[var(--mh-mid-light-turquoise)] flex items-center justify-center gap-3 px-3 rounded-sm"><div className="w-4"><img src={generarInformeIcon} /></div><p>Generar</p></Button>
+        {/* <Button onClick={generarInforme} className="shadow-lg bg-[var(--mh-mid-light-turquoise)] flex items-center justify-center gap-3 px-3 rounded-sm"><div className="w-4"><img src={generarInformeIcon} /></div><p>Generar</p></Button> */}
+        <ReportGenerator
+          mes={month}
+          anio={year}
+          tareas={tareas}
+          tiempoUso={tiempoUso}
+          tiempoUsoMedio={tiempoUsoMedio}
+          onGenerated={(url) => generarInforme(url)}
+        />
+
       </div>
-      <div className="bg-[var(--mh-light-gray)] h-[1px]"></div>
-      <p className="text-xl font-bold">KoroLang, Noviembre de 2025</p>
-      <div className="flex flex-wrap gap-4">
-        <RendimientoCard valor={17} titulo="Tareas realizadas" porcentaje={20} ascendente={true} observaciones="20% más que el mes pasado" />
-        <RendimientoCard valor={2.3} titulo="Duración mex de sesión" porcentaje={10} ascendente={false} observaciones="10% menos que el mes pasado" />
-        <RendimientoCard valor={7} titulo="Tareas vencidas" porcentaje={5} ascendente={false} observaciones="5% menos que el mes pasado" />
-      </div>
-      <div>
-        <ChartAreaDefault fillColor="var(--mh-mid-light-turquoise)" strokeColor="var(--mh-mid-dark-turquoise)" title="Tiempo de uso" chartData={chartDataDemo} chartKeyName="dia" chartValueName="tiempo" />
-      </div>
+
+
+      {
+        isReporteGenerado
+        &&
+        <>
+          <h2 style={{ marginTop: "20px" }}>Vista previa del PDF</h2>
+          <PDFViewer pdfUrl={pdfUrl} />
+        </>
+      }
     </div>
   );
 }

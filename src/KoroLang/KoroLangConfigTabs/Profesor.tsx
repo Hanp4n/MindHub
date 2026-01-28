@@ -7,7 +7,7 @@ type Props = {}
 const Profesor = (props: Props) => {
   return (
     <div className='flex flex-col gap-6 p-6 w-90'>
-      <h1 className='text-xl font-bold'>Accesibilidad</h1>
+      <h1 className='text-xl font-bold'>Profesor</h1>
       <div className='flex flex-col gap-5'>
         
         <div className='flex items-center justify-between'>

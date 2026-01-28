@@ -98,9 +98,6 @@ ipcMain.on("abrir-mindHub", () => {
       win2.webContents.openDevTools();
     }
   });
-  if (VITE_DEV_SERVER_URL) {
-    win2.webContents.openDevTools();
-  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win2.loadURL(`${process.env.VITE_DEV_SERVER_URL}containers/mindHub.html`);
   } else {

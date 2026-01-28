@@ -33,11 +33,13 @@ function Login() {
     }
     setError("");
     setIsAccediendo(true);
+    setIsPulsable(false);
     const { error: supabaseError } = await supabase.auth.signInWithPassword({
       email: correoElectronico,
       password: contrasena,
     });
     setIsAccediendo(false);
+    setIsPulsable(true);
     if (supabaseError) {
       setIntentos(intentos+1);
 
