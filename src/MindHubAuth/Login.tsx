@@ -102,11 +102,11 @@ function Login() {
             </Button>
           </span>
         </div>
-        {/* <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
+        <div onClick={() => window.ipcRenderer.send("abrir-ayudamh")} className="flex gap-3 cursor-pointer">
           <div className="w-6 opacity-50">
             <img src={ayudaIcon} />
           </div>
-        </div> */}
+        </div>
       </form>
     </div>
   )

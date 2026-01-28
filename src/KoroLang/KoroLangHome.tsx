@@ -97,12 +97,12 @@ const KoroLangPageMenu = ({changeQuitting, changeOpeningConfig}: KoroLangPageMen
         </div>
       </div>
       <div className="flex flex-col gap-5 cursor-pointer">
-        {/* <div onClick={() => window.ipcRenderer.send("abrir-ayudakl")} className="flex gap-3">
+        <div onClick={() => window.ipcRenderer.send("abrir-ayudakl")} className="flex gap-3">
           <div className="w-6">
             <img src={ayudaIcon} />
           </div>
           <p>Ayuda</p>
-        </div> */}
+        </div>
         <div onClick={() => changeQuitting(true)} className="flex gap-3">
           <div className="w-6">
             <img src={salirIcon} />
