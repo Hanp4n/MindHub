@@ -10,6 +10,8 @@ import iconoCuenta from "./icons/icono-cuenta.svg";
 import salirIcon from "./icons/salir.svg"
 import ayudaIcon from "./icons/ayudaIcon.svg"
 
+import {Library, DownloadIcon, Bell, LineChart } from "lucide-react"
+
 import { Session } from "@supabase/supabase-js";
 import DialogConfirm from "./dialogComponents/DialogConfirm";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";

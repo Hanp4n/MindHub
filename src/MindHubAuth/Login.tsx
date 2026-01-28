@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../icons/Group 11.svg';
 import { supabase } from '../supabaseClient';
@@ -13,6 +13,10 @@ function Login() {
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
   const [isAccediendo, setIsAccediendo] = useState(false);
+
+  const [intentos, setIntentos] = useState(0);
+  const [isBloqueado, setIsBloqueado] = useState(false);
+
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -35,6 +39,8 @@ function Login() {
     });
     setIsAccediendo(false);
     if (supabaseError) {
+      setIntentos(intentos+1);
+
       switch (supabaseError.message) {
         case "Invalid login credentials":
           setError("Credenciales inválidas. Revise que la contraseña esté bien escrita.");
@@ -55,6 +61,19 @@ function Login() {
   };
 
 
+  useEffect(() => {
+    if(intentos >= 3){
+
+      setIsBloqueado(true);
+      setTimeout(() => {
+        setIsBloqueado(false);
+      }, 1000 * intentos);
+    }
+  
+  }, [intentos])
+  
+
+
   return (
     <div className='w-screen h-screen flex items-center justify-center flex-col gap-5 '>
       <div className='flex flex-row items-center gap-2'>
@@ -66,6 +85,7 @@ function Login() {
           <label>
             <p>Correo electrónico</p>
             <Input
+            disabled={isBloqueado}
               type="text"
               value={correoElectronico}
               onChange={(e) => setCorreoElectronico(e.target.value)}
@@ -75,6 +95,7 @@ function Login() {
           <label>
             <p>Contraseña</p>
             <Input
+              disabled={isBloqueado}
               type="password"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
@@ -90,8 +111,8 @@ function Login() {
             <p className='text-[var(--mh-gray)]'>Recuérdame</p>
           </label>
           <span className='flex gap-5'>
-            <Button variant="white" type='button' onClick={handleRegister} className='p-2 px-5'>Registrarse</Button>
-            <Button variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>
+            <Button disabled={isBloqueado} variant="white" type='button' onClick={handleRegister} className='p-2 px-5'>Registrarse</Button>
+            <Button disabled={isBloqueado} variant="default" type='submit' className='p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black'>
               <span>Acceder</span>
               {
                 isAccediendo && <Spinner/>

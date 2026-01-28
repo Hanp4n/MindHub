@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "cursor-pointer p-2 px-5 bg-[var(--mh-mid-light-turquoise)] rounded-lg text-black hover:bg-[var(--mh-mid-light-turquoise)]/90",
-        white: "cursor-pointer bg-white p-2 px-5 hover:bg-white/80",
+        white: "cursor-pointer bg-background p-2 px-5 hover:bg-background/80",
         bordered: "cursor-pointer flex hover:bg-primary/10 items-center justify-center gap-4 border rounded-md p-3 py-1 border-[var(--mh-gray)]",
         klDefault: 'cursor-pointer w-fit bg-[var(--mh-dark-red)] hover:bg-[var(--mh-dark-red)]/90 border border-foreground rounded-md text-black',
         
